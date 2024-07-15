@@ -3,12 +3,15 @@ package doma.sidim.repository
 import doma.sidim.model.User
 import doma.sidim.model.Users
 import doma.sidim.util.Roles
-import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.deleteWhere
+import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
+import org.jetbrains.exposed.sql.update
 
-class UserRepository {
-    fun create(user: User): Long {
+class UserRepository : CrudRepository<User> {
+    override fun create(user: User): Long {
         var id: Long = 0
         transaction {
             id = Users.insert {
@@ -23,7 +26,7 @@ class UserRepository {
         return id
     }
 
-    fun read(id: Long): User? {
+    override fun read(id: Long): User? {
         return transaction {
             Users.select { Users.id eq id }
                 .mapNotNull {
@@ -40,7 +43,7 @@ class UserRepository {
         }
     }
 
-    fun update(id: Long, user: User): Boolean {
+    override fun update(id: Long, user: User): Boolean {
         return transaction {
             Users.update({ Users.id eq id }) {
                 it[firstname] = user.firstname
@@ -53,7 +56,7 @@ class UserRepository {
         }
     }
 
-    fun delete(id: Long): Boolean {
+    override fun delete(id: Long): Boolean {
         return transaction {
             Users.deleteWhere { Users.id eq id } > 0
         }

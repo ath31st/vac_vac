@@ -1,8 +1,8 @@
 package doma.sidim.repository
 
 interface CrudRepository<T> {
-    fun create(item: T): Int
-    fun read(id: Int): T?
-    fun update(id: Int, item: T): Boolean
-    fun delete(id: Int): Boolean
+    fun create(item: T): Long
+    fun read(id: Long): T?
+    fun update(id: Long, item: T): Boolean
+    fun delete(id: Long): Boolean
 }
