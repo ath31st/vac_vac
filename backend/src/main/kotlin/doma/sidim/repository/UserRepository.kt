@@ -11,16 +11,16 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update
 
 class UserRepository : CrudRepository<User> {
-    override fun create(user: User): Long {
+    override fun create(item: User): Long {
         var id: Long = 0
         transaction {
             id = Users.insert {
-                it[firstname] = user.firstname
-                it[lastname] = user.lastname
-                it[age] = user.age
-                it[email] = user.email
-                it[password] = user.password
-                it[role] = user.role.ordinal
+                it[firstname] = item.firstname
+                it[lastname] = item.lastname
+                it[age] = item.age
+                it[email] = item.email
+                it[password] = item.password
+                it[role] = item.role.ordinal
             }[Users.id]
         }
         return id
@@ -43,15 +43,15 @@ class UserRepository : CrudRepository<User> {
         }
     }
 
-    override fun update(id: Long, user: User): Boolean {
+    override fun update(id: Long, item: User): Boolean {
         return transaction {
             Users.update({ Users.id eq id }) {
-                it[firstname] = user.firstname
-                it[lastname] = user.lastname
-                it[age] = user.age
-                it[email] = user.email
-                it[password] = user.password
-                it[role] = user.role.ordinal
+                it[firstname] = item.firstname
+                it[lastname] = item.lastname
+                it[age] = item.age
+                it[email] = item.email
+                it[password] = item.password
+                it[role] = item.role.ordinal
             } > 0
         }
     }
