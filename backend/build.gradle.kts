@@ -26,6 +26,7 @@ repositories {
 dependencies {
     implementation("io.ktor:ktor-server-core-jvm")
     implementation("io.ktor:ktor-server-auth-jvm")
+    implementation("io.ktor:ktor-server-auth-jwt")
     implementation("io.ktor:ktor-server-auto-head-response-jvm")
     implementation("io.ktor:ktor-server-resources-jvm")
     implementation("io.ktor:ktor-server-host-common-jvm")
@@ -40,6 +41,7 @@ dependencies {
     implementation("com.h2database:h2:$h2_version")
     implementation("io.ktor:ktor-server-netty-jvm")
     implementation("ch.qos.logback:logback-classic:$logback_version")
+    implementation("com.auth0:java-jwt:4.4.0")
     implementation("at.favre.lib:bcrypt:0.10.2")
     testImplementation("io.ktor:ktor-server-tests-jvm")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
