@@ -12,7 +12,9 @@ data class Vacancy(
     val description: String,
     val englishLevel: EnglishLevels,
     val grade: EducationLevels,
-    val tags: List<String>
+    val tags: List<String>,
+    val isVisible: Boolean,
+    val creatorId: Long,
 )
 
 object Vacancies : Table("vacancies") {
@@ -22,6 +24,8 @@ object Vacancies : Table("vacancies") {
     val englishLevel = integer("english_level")
     val grade = integer("grade")
     val tags = text("tags")
+    val isVisible = bool("visible")
+    val creatorId = long("creator_id").references(Users.id)
 
     override val primaryKey = PrimaryKey(id)
 }
