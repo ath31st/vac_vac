@@ -3,6 +3,7 @@ package doma.sidim.util
 import com.auth0.jwt.JWT
 import com.auth0.jwt.JWTVerifier
 import com.auth0.jwt.algorithms.Algorithm
+import doma.sidim.model.User
 import io.github.cdimascio.dotenv.dotenv
 import java.util.*
 
@@ -19,10 +20,12 @@ object JwtConfig {
         .withIssuer(issuer)
         .build()
 
-    fun generateToken(email: String): String {
+    fun generateToken(user: User): String {
         return JWT.create()
             .withIssuer(issuer)
-            .withClaim("email", email)
+            .withClaim("email", user.email)
+            .withClaim("user_id", user.id)
+            .withClaim("role", user.role.ordinal)
             .withExpiresAt(Date(System.currentTimeMillis() + validityInMs))
             .sign(algorithm)
     }

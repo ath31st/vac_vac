@@ -36,7 +36,7 @@ fun Application.configureRouting(userService: UserService) {
             val loginDto = call.receive<UserLoginDto>()
             val user = userService.authenticate(loginDto.email, loginDto.password)
             if (user != null) {
-                val token = JwtConfig.generateToken(user.email)
+                val token = JwtConfig.generateToken(user)
                 call.respond(mapOf("token" to token))
             } else {
                 call.respond(HttpStatusCode.Unauthorized, mapOf("message" to "Invalid credentials"))
