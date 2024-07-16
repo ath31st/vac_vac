@@ -43,6 +43,7 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:$logback_version")
     implementation("com.auth0:java-jwt:4.4.0")
     implementation("at.favre.lib:bcrypt:0.10.2")
+    implementation("io.github.cdimascio:dotenv-kotlin:6.4.1")
     testImplementation("io.ktor:ktor-server-tests-jvm")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
 }
