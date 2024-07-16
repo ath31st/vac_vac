@@ -61,4 +61,21 @@ class UserRepository : CrudRepository<User> {
             Users.deleteWhere { Users.id eq id } > 0
         }
     }
+
+    fun findByEmail(email: String): User? {
+        return transaction {
+            Users.select { Users.email.eq(email) }
+                .mapNotNull {
+                User(
+                    id = it[Users.id],
+                    firstname = it[Users.firstname],
+                    lastname = it[Users.lastname],
+                    age = it[Users.age],
+                    email = it[Users.email],
+                    password = it[Users.password],
+                    role = Roles.entries[it[Users.role]]
+                )
+            }.singleOrNull()
+        }
+    }
 }

@@ -1,5 +1,6 @@
 package doma.sidim.service
 
+import at.favre.lib.crypto.bcrypt.BCrypt
 import doma.sidim.dto.UserRegisterDto
 import doma.sidim.model.User
 import doma.sidim.repository.UserRepository
@@ -12,7 +13,7 @@ class UserService(private val userRepository: UserRepository) {
             lastname = userDto.lastname,
             age = userDto.age,
             email = userDto.email,
-            password = userDto.password,
+            password = BCrypt.withDefaults().hashToString(12, userDto.password.toCharArray()),
             role = Roles.entries[userDto.role]
         )
         return userRepository.create(user)
@@ -28,5 +29,11 @@ class UserService(private val userRepository: UserRepository) {
 
     fun deleteUserById(id: Long): Boolean {
         return userRepository.delete(id)
+    }
+
+    fun authenticate(email: String, password: String): User? {
+        val user = userRepository.findByEmail(email) ?: return null
+        val result = BCrypt.verifyer().verify(password.toCharArray(), user.password)
+        return if (result.verified) user else null
     }
 }
