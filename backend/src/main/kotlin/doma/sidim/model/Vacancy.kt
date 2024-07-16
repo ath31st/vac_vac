@@ -2,6 +2,7 @@ package doma.sidim.model
 
 import doma.sidim.util.EducationLevels
 import doma.sidim.util.EnglishLevels
+import doma.sidim.util.Tags
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.Table
 
@@ -12,7 +13,7 @@ data class Vacancy(
     val description: String,
     val englishLevel: EnglishLevels,
     val grade: EducationLevels,
-    val tags: List<String>,
+    val tags: List<Tags>,
     val isVisible: Boolean,
     val creatorId: Long,
 )
