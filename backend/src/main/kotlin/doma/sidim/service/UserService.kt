@@ -31,6 +31,10 @@ class UserService(private val userRepository: UserRepository) {
         return userRepository.delete(id)
     }
 
+    fun getUserByEmail(email: String): User? {
+        return userRepository.findByEmail(email)
+    }
+
     fun authenticate(email: String, password: String): User? {
         val user = userRepository.findByEmail(email) ?: return null
         val result = BCrypt.verifyer().verify(password.toCharArray(), user.password)
