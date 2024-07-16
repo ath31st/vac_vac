@@ -13,7 +13,7 @@ import io.ktor.server.resources.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
-fun Application.configureRouting() {
+fun Application.configureRouting(userService: UserService) {
     install(AutoHeadResponse)
     install(Resources)
     install(StatusPages) {
@@ -21,7 +21,6 @@ fun Application.configureRouting() {
             call.respondText(text = "500: $cause", status = HttpStatusCode.InternalServerError)
         }
     }
-    val userService = UserService(UserRepository())
 
     routing {
         post("/users") {
