@@ -30,6 +30,16 @@ enum class Tags(private val displayName: String) {
             return entries.find { it.displayName == displayName }
         }
 
+        fun fromSetIds(setIds: Set<Int>): List<Tags> {
+            return setIds.mapNotNull {
+                try {
+                    entries.getOrNull(it)
+                } catch (e: NumberFormatException) {
+                    null
+                }
+            }
+        }
+
         fun fromListIds(stringIds: String): List<Tags> {
             return stringIds.split(",")
                 .mapNotNull {
