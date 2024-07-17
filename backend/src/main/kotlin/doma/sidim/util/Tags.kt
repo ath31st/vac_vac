@@ -25,7 +25,21 @@ enum class Tags(private val displayName: String) {
     MANUFACTURING("Manufacturing"),
     LOGISTICS("Logistics");
 
-    fun fromDisplayName(displayName: String): Tags? {
-        return entries.find { it.displayName == displayName }
+    companion object {
+        fun fromDisplayName(displayName: String): Tags? {
+            return entries.find { it.displayName == displayName }
+        }
+
+        fun fromListIds(stringIds: String): List<Tags> {
+            return stringIds.split(",")
+                .mapNotNull {
+                    try {
+                        val index = it.trim().toInt()
+                        entries.getOrNull(index)
+                    } catch (e: NumberFormatException) {
+                        null
+                    }
+                }
+        }
     }
 }
