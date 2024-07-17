@@ -5,13 +5,10 @@ import doma.sidim.model.Vacancy
 import doma.sidim.util.EducationLevels
 import doma.sidim.util.EnglishLevels
 import doma.sidim.util.Tags
+import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
-import org.jetbrains.exposed.sql.deleteWhere
-import org.jetbrains.exposed.sql.insert
-import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.statements.UpdateBuilder
 import org.jetbrains.exposed.sql.transactions.transaction
-import org.jetbrains.exposed.sql.update
 
 class VacancyRepository : CrudRepository<Vacancy> {
     override fun create(item: Vacancy): Long {
@@ -53,6 +50,23 @@ class VacancyRepository : CrudRepository<Vacancy> {
             Vacancies.update({ Vacancies.id eq id }) {
                 fillVacancyFields(it, item)
             } > 0
+        }
+    }
+
+    fun getActiveVacancies(): List<Vacancy> {
+        return transaction {
+            Vacancies.selectAll().map {
+                Vacancy(
+                    id = it[Vacancies.id],
+                    title = it[Vacancies.title],
+                    description = it[Vacancies.description],
+                    englishLevel = EnglishLevels.entries[it[Vacancies.englishLevel]],
+                    grade = EducationLevels.entries[it[Vacancies.grade]],
+                    tags = Tags.fromListIds(it[Vacancies.tags]),
+                    isVisible = it[Vacancies.isVisible],
+                    creatorId = it[Vacancies.creatorId],
+                )
+            }
         }
     }
 
