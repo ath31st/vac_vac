@@ -25,6 +25,10 @@ class VacancyService(private val vacancyRepository: VacancyRepository) {
         return vacancyRepository.read(id)
     }
 
+    fun updateVacancy(id: Long, vacancy: Vacancy): Boolean {
+        return vacancyRepository.update(id, vacancy)
+    }
+
     fun getAllActiveVacancies(): List<Vacancy> {
         return vacancyRepository.getActiveVacancies()
     }
