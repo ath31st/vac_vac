@@ -2,7 +2,9 @@ package doma.sidim
 
 import doma.sidim.plugins.*
 import doma.sidim.repository.UserRepository
+import doma.sidim.repository.VacancyRepository
 import doma.sidim.service.UserService
+import doma.sidim.service.VacancyService
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
@@ -14,11 +16,12 @@ fun main() {
 
 fun Application.module() {
     val userService = UserService(UserRepository())
+    val vacancyService = VacancyService(VacancyRepository())
 
     configureDatabases()
     configureSecurity(userService)
     configureHTTP()
     configureMonitoring()
     configureSerialization()
-    configureRouting(userService)
+    configureRouting(userService, vacancyService)
 }
