@@ -8,7 +8,6 @@ import org.jetbrains.exposed.sql.insert
 object PreparedData {
     fun insertInitialData() {
         Users.insert {
-            it[id] = 1
             it[firstname] = "Petr"
             it[lastname] = "Petrov"
             it[age] = 55
@@ -18,7 +17,6 @@ object PreparedData {
         }
 
         Users.insert {
-            it[id] = 2
             it[firstname] = "Oleg"
             it[lastname] = "Olegov"
             it[age] = 23
@@ -28,7 +26,6 @@ object PreparedData {
         }
 
         Vacancies.insert {
-            it[id] = 1
             it[title] = "System Administrator"
             it[description] =
                 "Experienced System Administrator to manage and support IT infrastructure."
@@ -40,7 +37,6 @@ object PreparedData {
         }
 
         Vacancies.insert {
-            it[id] = 2
             it[title] = "Junior Developer"
             it[description] = "Looking for a Junior Developer with 1 year experience in Java."
             it[englishLevel] = 1
@@ -51,7 +47,6 @@ object PreparedData {
         }
 
         Vacancies.insert {
-            it[id] = 3
             it[title] = "Senior Data Scientist"
             it[description] = "Experienced Data Scientist needed for a leading tech company."
             it[englishLevel] = 3
@@ -62,7 +57,6 @@ object PreparedData {
         }
 
         Vacancies.insert {
-            it[id] = 4
             it[title] = "Marketing Specialist"
             it[description] = "Seeking a Marketing Specialist with expertise in digital marketing."
             it[englishLevel] = 2
@@ -73,7 +67,6 @@ object PreparedData {
         }
 
         Vacancies.insert {
-            it[id] = 5
             it[title] = "Project Manager"
             it[description] = "Project Manager needed for overseeing software development projects."
             it[englishLevel] = 2
@@ -84,7 +77,6 @@ object PreparedData {
         }
 
         Vacancies.insert {
-            it[id] = 6
             it[title] = "Graphic Designer"
             it[description] = "Creative Graphic Designer with a strong portfolio in branding."
             it[englishLevel] = 2
