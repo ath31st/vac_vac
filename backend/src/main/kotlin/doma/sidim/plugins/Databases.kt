@@ -11,9 +11,9 @@ import org.jetbrains.exposed.sql.transactions.transaction
 
 fun Application.configureDatabases() {
     val database = Database.connect(
-        url = "jdbc:h2:mem:vac_db;DB_CLOSE_DELAY=-1",
+        url = "jdbc:sqlite:./vac_db.db",
         user = "root",
-        driver = "org.h2.Driver",
+        driver = "org.sqlite.JDBC",
         password = ""
     )
 
