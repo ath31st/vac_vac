@@ -3,6 +3,9 @@ package doma.sidim.route
 import doma.sidim.dto.VacancyCreationDto
 import doma.sidim.model.Vacancy
 import doma.sidim.service.VacancyService
+import doma.sidim.util.EducationLevels
+import doma.sidim.util.EnglishLevels
+import doma.sidim.util.Tags
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
@@ -53,6 +56,28 @@ fun Route.vacancyRoutes(vacancyService: VacancyService) {
             } else {
                 call.respond(HttpStatusCode.NotFound)
             }
+        }
+
+        get("/vacancies/tags") {
+            call.respond(
+                HttpStatusCode.OK,
+                Tags.entries.map { tag -> mapOf(tag.ordinal to tag.name) })
+        }
+
+        get("/vacancies/education-levels") {
+            call.respond(
+                HttpStatusCode.OK,
+                EducationLevels.entries.map { education ->
+                    mapOf(education.ordinal to education.name)
+                }
+            )
+        }
+
+        get("/vacancies/english-levels") {
+            call.respond(
+                HttpStatusCode.OK,
+                EnglishLevels.entries.map { english -> mapOf(english.ordinal to english.name) }
+            )
         }
     }
 }
