@@ -6,14 +6,12 @@ const Container = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100vh;
-    background-color: #f0f0f0;
 `
 
 const Form = styled.form`
     display: flex;
     flex-direction: column;
-    background: white;
+    background: #b7b7b7;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -42,12 +40,20 @@ const Button = styled.button`
     }
 `
 
+const ErrorMessage = styled.p`
+    color: red;
+    font-size: 14px;
+`
+
 const Signup = () => {
   const [formData, setFormData] = useState({
     username: '',
     email: '',
     password: '',
+    confirmPassword: '',
   })
+
+  const [error, setError] = useState('')
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -59,8 +65,13 @@ const Signup = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    console.log('Form submitted:', formData)
-    // todo call auth api
+    if (formData.password !== formData.confirmPassword) {
+      setError('Passwords do not match')
+    } else {
+      setError('')
+      console.log('Form submitted:', formData)
+      // todo call register api
+    }
   }
 
   return (
@@ -88,6 +99,14 @@ const Signup = () => {
           value={formData.password}
           onChange={handleChange}
         />
+        <Input
+          type="password"
+          name="confirmPassword"
+          placeholder="Confirm Password"
+          value={formData.confirmPassword}
+          onChange={handleChange}
+        />
+        {error && <ErrorMessage>{error}</ErrorMessage>}
         <Button type="submit">Sign Up</Button>
       </Form>
     </Container>
