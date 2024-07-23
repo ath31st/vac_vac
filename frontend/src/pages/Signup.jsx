@@ -24,7 +24,8 @@ const Form = styled.form`
 
 const Signup = () => {
   const [formData, setFormData] = useState({
-    username: '',
+    firstName: '',
+    lastName: '',
     email: '',
     age: '',
     password: '',
@@ -57,12 +58,13 @@ const Signup = () => {
     })
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     if (
       formData.password === '' ||
       formData.email === '' ||
-      formData.username === '' ||
+      formData.firstName === '' ||
+      formData.lastName === '' ||
       formData.age === ''
     ) {
       setError('Registration data cannot be empty')
@@ -70,7 +72,8 @@ const Signup = () => {
       setError('Passwords do not match')
     } else {
       setError('')
-      // Add your form submission logic here
+      const response = await axios.post(`${apiUrl}/api/v1/users`, formData)
+      console.log(response)
     }
   }
 
@@ -80,9 +83,16 @@ const Signup = () => {
         <h2>Signup</h2>
         <InputField
           type="text"
-          name="username"
-          placeholder="Username"
-          value={formData.username}
+          name="firstName"
+          placeholder="First name"
+          value={formData.firstName}
+          onChange={handleChange}
+        />
+        <InputField
+          type="text"
+          name="lastName"
+          placeholder="Last name"
+          value={formData.lastName}
           onChange={handleChange}
         />
         <InputField
