@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import InputField from '../components/input/InputField'
 import SubmitButton from '../components/button/SubmitButton'
+import ErrorMessage from '../components/message/ErrorMessage'
 
 const Container = styled.div`
     display: flex;
@@ -17,11 +18,6 @@ const Form = styled.form`
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-`
-
-const ErrorMessage = styled.p`
-    color: red;
-    font-size: 14px;
 `
 
 const Login = () => {
