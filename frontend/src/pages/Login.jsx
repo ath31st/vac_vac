@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import InputField from '../components/input/InputField'
+import SubmitButton from '../components/button/SubmitButton'
 
 const Container = styled.div`
     display: flex;
@@ -16,21 +17,6 @@ const Form = styled.form`
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-`
-
-const Button = styled.button`
-    padding: 10px 20px;
-    font-size: 16px;
-    color: white;
-    background-color: #007BFF;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-top: 10px;
-
-    &:hover {
-        background-color: #0056b3;
-    }
 `
 
 const ErrorMessage = styled.p`
@@ -84,10 +70,9 @@ const Login = () => {
           onChange={handleChange}
         />
         {error && <ErrorMessage>{error}</ErrorMessage>}
-        <Button
-          type="submit"
-          onClick={handleSubmit}
-        >Sign In</Button>
+        <SubmitButton type="submit" onClick={handleSubmit}>
+          Sign In
+        </SubmitButton>
       </Form>
     </Container>
   )
