@@ -1,5 +1,6 @@
 package doma.sidim.route
 
+import doma.sidim.dto.RoleDto
 import doma.sidim.dto.UserLoginDto
 import doma.sidim.dto.UserRegisterDto
 import doma.sidim.model.User
@@ -34,7 +35,12 @@ fun Route.userRoutes(userService: UserService) {
     get("/roles") {
         call.respond(
             HttpStatusCode.OK,
-            Roles.entries.map { role -> mapOf(role.ordinal to role.name) })
+            Roles.entries.map { role ->
+                RoleDto(
+                    id = role.ordinal,
+                    name = role.displayName()
+                )
+            })
     }
 
     authenticate("auth-jwt") {
