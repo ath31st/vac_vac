@@ -17,17 +17,20 @@ import io.ktor.server.routing.*
 fun Route.userRoutes(userService: UserService) {
     post("/users") {
         val userDto = call.receive<UserRegisterDto>()
-        val id = userService.createUser(userDto)
-        call.respond(HttpStatusCode.Created, id)
+        userService.getUserByEmail(userDto.email)?.let {
+            call.respond(HttpStatusCode.BadRequest, "Email is already in use")
+        } ?: run {
+            val id = userService.createUser(userDto)
+            call.respond(HttpStatusCode.Created, id)
+        }
     }
 
     post("/auth") {
         val loginDto = call.receive<UserLoginDto>()
-        val user = userService.authenticate(loginDto.email, loginDto.password)
-        if (user != null) {
+        userService.authenticate(loginDto.email, loginDto.password)?.let { user ->
             val token = JwtConfig.generateToken(user)
             call.respond(mapOf("token" to token))
-        } else {
+        } ?: run {
             call.respond(HttpStatusCode.Unauthorized, mapOf("message" to "Invalid credentials"))
         }
     }
