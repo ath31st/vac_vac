@@ -5,6 +5,7 @@ import doma.sidim.dto.UserRegisterDto
 import doma.sidim.model.User
 import doma.sidim.service.UserService
 import doma.sidim.util.JwtConfig
+import doma.sidim.util.Roles
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
@@ -28,6 +29,12 @@ fun Route.userRoutes(userService: UserService) {
         } else {
             call.respond(HttpStatusCode.Unauthorized, mapOf("message" to "Invalid credentials"))
         }
+    }
+
+    get("/roles") {
+        call.respond(
+            HttpStatusCode.OK,
+            Roles.entries.map { role -> mapOf(role.ordinal to role.name) })
     }
 
     authenticate("auth-jwt") {
