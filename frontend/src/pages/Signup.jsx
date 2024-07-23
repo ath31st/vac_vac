@@ -5,6 +5,7 @@ import InputField from '../components/input/InputField'
 import SubmitButton from '../components/button/SubmitButton'
 import ErrorMessage from '../components/message/ErrorMessage'
 import SelectField from '../components/select/SelectField'
+import { useNavigate } from 'react-router-dom'
 
 const Container = styled.div`
     display: flex;
@@ -36,6 +37,7 @@ const Signup = () => {
   const [roles, setRoles] = useState([])
   const [error, setError] = useState('')
   const apiUrl = process.env.REACT_APP_API_BASE_URL
+  const navigate = useNavigate()
 
   useEffect(() => {
     const fetchRoles = async () => {
@@ -72,8 +74,13 @@ const Signup = () => {
       setError('Passwords do not match')
     } else {
       setError('')
-      const response = await axios.post(`${apiUrl}/api/v1/users`, formData)
-      console.log(response)
+      try {
+        await axios.post(`${apiUrl}/api/v1/users`, formData)
+        navigate('/login')
+      } catch (error) {
+        console.error('Error during registration:', error)
+        setError(`Registration failed with cause: ${error}. Please try again.`)
+      }
     }
   }
 
