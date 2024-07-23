@@ -10,6 +10,7 @@ fun Application.configureHTTP() {
         allowHeaders { true }
         HttpMethod.DefaultMethods.forEach { allowMethod(it) }
         allowNonSimpleContentTypes = true
+        anyHost()
     }
     install(DefaultHeaders) {
         header("X-Engine", "Ktor")
