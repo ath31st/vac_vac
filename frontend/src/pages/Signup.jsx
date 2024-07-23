@@ -24,8 +24,8 @@ const Form = styled.form`
 
 const Signup = () => {
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
+    firstname: '',
+    lastname: '',
     email: '',
     age: '',
     password: '',
@@ -63,8 +63,8 @@ const Signup = () => {
     if (
       formData.password === '' ||
       formData.email === '' ||
-      formData.firstName === '' ||
-      formData.lastName === '' ||
+      formData.firstname === '' ||
+      formData.lastname === '' ||
       formData.age === ''
     ) {
       setError('Registration data cannot be empty')
@@ -83,16 +83,16 @@ const Signup = () => {
         <h2>Signup</h2>
         <InputField
           type="text"
-          name="firstName"
+          name="firstname"
           placeholder="First name"
-          value={formData.firstName}
+          value={formData.firstname}
           onChange={handleChange}
         />
         <InputField
           type="text"
-          name="lastName"
+          name="lastname"
           placeholder="Last name"
-          value={formData.lastName}
+          value={formData.lastname}
           onChange={handleChange}
         />
         <InputField
