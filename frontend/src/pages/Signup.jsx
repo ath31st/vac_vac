@@ -34,11 +34,12 @@ const Signup = () => {
 
   const [roles, setRoles] = useState([])
   const [error, setError] = useState('')
+  const apiUrl = process.env.REACT_APP_API_BASE_URL
 
   useEffect(() => {
     const fetchRoles = async () => {
       try {
-        const response = await axios.get('/api/roles')
+        const response = await axios.get(`${apiUrl}/api/v1/roles`)
         setRoles(response.data)
       } catch (error) {
         console.error('Error fetching roles:', error)
@@ -46,7 +47,7 @@ const Signup = () => {
     }
 
     fetchRoles()
-  }, [])
+  }, [apiUrl])
 
   const handleChange = (e) => {
     const { name, value } = e.target
