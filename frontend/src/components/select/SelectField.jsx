@@ -13,7 +13,7 @@ const SelectField = ({ name, value, onChange, options }) => {
   return (
     <StyledSelect name={name} value={value} onChange={onChange}>
       <option value="" disabled>Select a role</option>
-      {options.map((option) => (
+      {options.map(option => (
         <option key={option.id} value={option.id}>
           {option.name}
         </option>
