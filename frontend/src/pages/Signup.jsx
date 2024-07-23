@@ -1,8 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
+import axios from 'axios'
 import InputField from '../components/input/InputField'
 import SubmitButton from '../components/button/SubmitButton'
 import ErrorMessage from '../components/message/ErrorMessage'
+import SelectField from '../components/select/SelectField'
 
 const Container = styled.div`
     display: flex;
@@ -24,11 +26,27 @@ const Signup = () => {
   const [formData, setFormData] = useState({
     username: '',
     email: '',
+    age: '',
     password: '',
     confirmPassword: '',
+    role: '',
   })
 
+  const [roles, setRoles] = useState([])
   const [error, setError] = useState('')
+
+  useEffect(() => {
+    const fetchRoles = async () => {
+      try {
+        const response = await axios.get('/api/roles')
+        setRoles(response.data)
+      } catch (error) {
+        console.error('Error fetching roles:', error)
+      }
+    }
+
+    fetchRoles()
+  }, [])
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -40,12 +58,18 @@ const Signup = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    if (formData.password !== formData.confirmPassword) {
+    if (
+      formData.password === '' ||
+      formData.email === '' ||
+      formData.username === '' ||
+      formData.age === ''
+    ) {
+      setError('Registration data cannot be empty')
+    } else if (formData.password !== formData.confirmPassword) {
       setError('Passwords do not match')
     } else {
       setError('')
-      console.log('Form submitted:', formData)
-      // todo call register api
+      // Add your form submission logic here
     }
   }
 
@@ -66,6 +90,19 @@ const Signup = () => {
           placeholder="Email"
           value={formData.email}
           onChange={handleChange}
+        />
+        <InputField
+          type="age"
+          name="age"
+          placeholder="Age"
+          value={formData.age}
+          onChange={handleChange}
+        />
+        <SelectField
+          name="role"
+          value={formData.role}
+          onChange={handleChange}
+          options={roles}
         />
         <InputField
           type="password"
