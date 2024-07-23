@@ -1,4 +1,4 @@
-import { Routes, Route, Link } from 'react-router-dom'
+import { Routes, Route } from 'react-router-dom'
 import Signup from './pages/Signup'
 import NotFoundPage from './pages/NotFoundPage'
 import Layout from './components/Layout'
@@ -15,6 +15,10 @@ function App () {
           <Route path="/signup" element={<Signup/>}/>
           <Route path="/login" element={<Login/>}/>
           <Route path="/vacancies" element={<Vacancies/>}/>
+          {/*<Route path="/vacancies/:id" element={<SingleVacancy/>}/>*/}
+          {/*<Route path="/employee-vacancies" element={<EmployeeVacancies/>}/>*/}
+          {/*<Route path="/employer-vacancies" element={<EmployerVacancies/>}/>*/}
+          {/*<Route path="/vacancies/new" element={<CreateVacancy/>}/>*/}
           <Route path="*" element={<NotFoundPage/>}/>
         </Route>
       </Routes>
