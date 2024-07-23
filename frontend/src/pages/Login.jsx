@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
+import InputField from '../components/input/InputField'
 
 const Container = styled.div`
     display: flex;
@@ -15,14 +16,6 @@ const Form = styled.form`
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-`
-
-const Input = styled.input`
-    margin: 10px 0;
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
 `
 
 const Button = styled.button`
@@ -68,7 +61,7 @@ const Login = () => {
     } else if (formState.password === '') {
       setError('Password is required')
     } else {
-      alert('Submited')
+      alert('Submitted')
     }
   }
 
@@ -76,14 +69,14 @@ const Login = () => {
     <Container>
       <Form onSubmit={handleSubmit}>
         <h2>Login</h2>
-        <Input
+        <InputField
           type="email"
           name="email"
           placeholder="Email"
           value={formState.email}
           onChange={handleChange}
         />
-        <Input
+        <InputField
           type="password"
           name="password"
           placeholder="Password"
