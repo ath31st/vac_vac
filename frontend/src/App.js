@@ -15,10 +15,11 @@ function App () {
           <Route path="/signup" element={<Signup/>}/>
           <Route path="/login" element={<Login/>}/>
           <Route path="/vacancies" element={<Vacancies/>}/>
-          {/*<Route path="/vacancies/:id" element={<SingleVacancy/>}/>*/}
-          {/*<Route path="/employee-vacancies" element={<EmployeeVacancies/>}/>*/}
-          {/*<Route path="/employer-vacancies" element={<EmployerVacancies/>}/>*/}
-          {/*<Route path="/vacancies/new" element={<CreateVacancy/>}/>*/}
+          {/*<Route path="/my-vacancies" element={<MyVacancies/>}/>*/}
+          {/*<Route path="/my-vacancies/:id" element={<MyVacancy/>}/>*/}
+          {/*<Route path="/active-vacancies" element={<ActiveVacancies/>}/>*/}
+          {/*<Route path="/active-vacancies/:id" element={<ActiveVacancy/>}/>*/}
+          {/*<Route path="/create-vacancy" element={<CreateVacancy/>}/>*/}
           <Route path="*" element={<NotFoundPage/>}/>
         </Route>
       </Routes>
