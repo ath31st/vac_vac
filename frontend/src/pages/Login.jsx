@@ -3,6 +3,8 @@ import styled from 'styled-components'
 import InputField from '../components/input/InputField'
 import SubmitButton from '../components/button/SubmitButton'
 import ErrorMessage from '../components/message/ErrorMessage'
+import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
 
 const Container = styled.div`
     display: flex;
@@ -27,6 +29,8 @@ const Login = () => {
   })
 
   const [error, setError] = useState('')
+  const navigate = useNavigate()
+  const apiUrl = process.env.REACT_APP_API_BASE_URL
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -36,14 +40,20 @@ const Login = () => {
     })
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     if (formState.email === '') {
       setError('Email is required')
     } else if (formState.password === '') {
       setError('Password is required')
     } else {
-      alert('Submitted')
+      try {
+        await axios.post(`${apiUrl}/api/v1/auth`, formState)
+        navigate('/vacancies')
+      } catch (error) {
+        console.error('Error during registration:', error)
+        setError(`Login failed with cause: ${error}. Please try again.`)
+      }
     }
   }
 
