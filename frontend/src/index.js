@@ -18,7 +18,6 @@ const GlobalStyle = createGlobalStyle`
         background: radial-gradient(#b7b7b7, #484848);
         display: grid;
         place-content: center;
-        text-align: center;
     }
 `
 
