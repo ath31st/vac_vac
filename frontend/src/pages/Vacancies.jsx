@@ -1,8 +1,9 @@
 import styled from 'styled-components'
 import Vacancy from '../components/Vacancy'
 import Sidebar from '../components/Sidebar'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import VacancyDetails from '../components/VacancyDetails'
+import axios from 'axios'
 
 const Container = styled.div`
     display: flex;
@@ -21,34 +22,29 @@ const VacanciesContainer = styled.div`
 `
 
 const Vacancies = () => {
+  const apiUrl = process.env.REACT_APP_API_BASE_URL
   const [selectedVacancy, setSelectedVacancy] = useState(null)
+  const [vacancies, setVacancies] = useState([])
 
-  const vacancies = [
-    {
-      id: 1,
-      title: 'Vacancy title 1',
-      description: 'Vacancy short description (first 50 characters)...',
-      englishLevel: 'eng 1',
-      grade: 'grade 1',
-    },
-    {
-      id: 2,
-      title: 'Vacancy title 2',
-      description: 'Vacancy short description (first 50 characters)...',
-      englishLevel: 'eng 2',
-      grade: 'grade 2',
-    },
-    {
-      id: 3,
-      title: 'Vacancy title 3',
-      description: 'Vacancy short description (first 50 characters)...',
-      englishLevel: 'eng 3',
-      grade: 'grade 3',
-    },
-  ]
+  useEffect(() => {
+    const fetchVacancies = async () => {
+      try {
+        const response = await axios.get(`${apiUrl}/api/v1/vacancies`)
+        setVacancies(response.data)
+      } catch (error) {
+        console.error('Error fetching Vacancies:', error)
+      }
+    }
+
+    fetchVacancies()
+  }, [apiUrl])
 
   const handleVacancyClick = (vacancy) => {
-    setSelectedVacancy(vacancy)
+    if (selectedVacancy === vacancy) {
+      setSelectedVacancy(null)
+    } else {
+      setSelectedVacancy(vacancy)
+    }
   }
 
   return (
@@ -61,6 +57,7 @@ const Vacancies = () => {
               key={vacancy.id}
               title={vacancy.title}
               description={vacancy.description}
+              tags={vacancy.tags}
               onClick={() => handleVacancyClick(vacancy)}
             />
           ))}

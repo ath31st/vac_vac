@@ -30,7 +30,8 @@ const Tag = styled.span`
 `
 
 const EnglishGradeLvls = styled.p`
-
+    padding-left: 20px;
+    margin: 10px;
 `
 
 const VacancyDetails = ({ vacancy }) => {
@@ -42,12 +43,9 @@ const VacancyDetails = ({ vacancy }) => {
       <VacancyDescription>{vacancy.description}</VacancyDescription>
       <h3>Contacts</h3>
       <Tags>
-        <Tag>Vacancy tag</Tag>
-        <Tag>Vacancy tag</Tag>
-        <Tag>Vacancy tag</Tag>
-        <Tag>Vacancy tag</Tag>
-        <Tag>Vacancy tag</Tag>
-        <Tag>Vacancy tag</Tag>
+        {vacancy.tags.map(tag => (
+          <Tag key={tag.id}>{tag}</Tag>
+        ))}
       </Tags>
       <button>Cancel response</button>
     </Container>
