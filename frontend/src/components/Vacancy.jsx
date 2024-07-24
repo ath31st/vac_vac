@@ -21,9 +21,9 @@ const ResponseStatus = styled.span`
     color: green;
 `
 
-const Vacancy = ({ title, description }) => {
+const Vacancy = ({ title, description, onClick }) => {
   return (
-    <Container>
+    <Container onClick={onClick}>
       <div>
         <VacancyTitle>{title}</VacancyTitle>
         <VacancyDescription>{description}</VacancyDescription>
