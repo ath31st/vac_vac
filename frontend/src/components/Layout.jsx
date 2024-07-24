@@ -1,18 +1,24 @@
-import { Link, Outlet } from 'react-router-dom'
+import React from 'react'
+import { Outlet } from 'react-router-dom'
+import Header from '../components/Header'
+import Footer from '../components/Footer'
+import styled from 'styled-components'
+
+const Container = styled.main`
+    padding: 20px;
+    min-height: calc(100vh - 100px);
+    display: flex;
+    flex-direction: column;
+`
 
 const Layout = () => {
   return (
     <>
-      <header>
-        <Link to="/">Home</Link>
-        <Link to="/vacancies">Vacancies</Link>
-      </header>
-
-      <main className="container">
+      <Header/>
+      <Container>
         <Outlet/>
-      </main>
-
-      <footer className="container">&copy; Vac Vac project 2024</footer>
+      </Container>
+      <Footer/>
     </>
   )
 }
