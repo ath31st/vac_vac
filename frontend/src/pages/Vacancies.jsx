@@ -12,13 +12,13 @@ const Container = styled.div`
 const MainContent = styled.div`
     flex-grow: 1;
     display: flex;
-    padding: 20px;
 `
 
 const VacanciesContainer = styled.div`
     display: flex;
     flex-direction: column;
     gap: 20px;
+    padding: 20px;
 `
 
 const Vacancies = () => {

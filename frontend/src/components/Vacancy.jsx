@@ -7,6 +7,10 @@ const Container = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    &:hover {
+        background-color: #f0f0f0;
+    }
 `
 
 const VacancyTitle = styled.h3`
