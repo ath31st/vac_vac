@@ -79,7 +79,11 @@ const Signup = () => {
         navigate('/login')
       } catch (error) {
         console.error('Error during registration:', error)
-        setError(`Registration failed with cause: ${error}. Please try again.`)
+        if (error.response && error.response.data) {
+          setError(`Registration failed with cause: ${error.response.data}.`)
+        } else {
+          setError(`Registration failed. Please try again.`)
+        }
       }
     }
   }
