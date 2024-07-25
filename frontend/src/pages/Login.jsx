@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
+import { useDispatch, useSelector } from 'react-redux'
 import InputField from '../components/input/InputField'
 import SubmitButton from '../components/button/SubmitButton'
 import ErrorMessage from '../components/message/ErrorMessage'
 import { useNavigate } from 'react-router-dom'
-import axios from 'axios'
+import { login } from '../redux/actions/authActions'
 
 const Container = styled.div`
     display: flex;
@@ -28,9 +29,9 @@ const Login = () => {
     password: '',
   })
 
-  const [error, setError] = useState('')
+  const dispatch = useDispatch()
+  const error = useSelector((state) => state.auth?.error)
   const navigate = useNavigate()
-  const apiUrl = process.env.REACT_APP_API_BASE_URL
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -40,20 +41,21 @@ const Login = () => {
     })
   }
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault()
     if (formState.email === '') {
-      setError('Email is required')
+      dispatch({
+        type: 'SET_ERROR',
+        payload: 'Email is required',
+      })
     } else if (formState.password === '') {
-      setError('Password is required')
+      dispatch({
+        type: 'SET_ERROR',
+        payload: 'Password is required',
+      })
     } else {
-      try {
-        await axios.post(`${apiUrl}/api/v1/auth`, formState)
-        navigate('/vacancies')
-      } catch (error) {
-        console.error('Error during registration:', error)
-        setError(`Login failed with cause: ${error}. Please try again.`)
-      }
+      dispatch(login(formState))
+      navigate('/vacancies')
     }
   }
 
@@ -76,9 +78,7 @@ const Login = () => {
           onChange={handleChange}
         />
         {error && <ErrorMessage>{error}</ErrorMessage>}
-        <SubmitButton type="submit" onClick={handleSubmit}>
-          Sign In
-        </SubmitButton>
+        <SubmitButton type="submit">Sign In</SubmitButton>
       </Form>
     </Container>
   )
