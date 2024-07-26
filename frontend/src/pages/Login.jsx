@@ -1,11 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { useDispatch, useSelector } from 'react-redux'
 import InputField from '../components/input/InputField'
 import SubmitButton from '../components/button/SubmitButton'
 import ErrorMessage from '../components/message/ErrorMessage'
 import { useNavigate } from 'react-router-dom'
-import { login } from '../redux/actions/authActions'
+import { login } from '../redux/authSlice'
 
 const Container = styled.div`
     display: flex;
@@ -30,7 +30,8 @@ const Login = () => {
   })
 
   const dispatch = useDispatch()
-  const error = useSelector((state) => state.auth?.error)
+  const error = useSelector((state) => state.auth.error)
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated)
   const navigate = useNavigate()
 
   const handleChange = (e) => {
@@ -43,21 +44,14 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    if (formState.email === '') {
-      dispatch({
-        type: 'SET_ERROR',
-        payload: 'Email is required',
-      })
-    } else if (formState.password === '') {
-      dispatch({
-        type: 'SET_ERROR',
-        payload: 'Password is required',
-      })
-    } else {
-      dispatch(login(formState))
+    dispatch(login(formState))
+  }
+
+  useEffect(() => {
+    if (isAuthenticated) {
       navigate('/vacancies')
     }
-  }
+  }, [isAuthenticated, navigate])
 
   return (
     <Container>
