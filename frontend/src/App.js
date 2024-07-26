@@ -5,6 +5,7 @@ import Layout from './components/Layout'
 import Vacancies from './pages/Vacancies'
 import HomePage from './pages/HomePage'
 import Login from './pages/Login'
+import PrivateRoute from './components/PrivateRoute'
 
 function App () {
   return (
@@ -14,7 +15,8 @@ function App () {
           <Route index element={<HomePage/>}/>
           <Route path="/signup" element={<Signup/>}/>
           <Route path="/login" element={<Login/>}/>
-          <Route path="/vacancies" element={<Vacancies/>}/>
+          <Route path="/vacancies"
+                 element={<PrivateRoute element={<Vacancies/>}/>}/>
           {/*<Route path="/my-vacancies" element={<MyVacancies/>}/>*/}
           {/*<Route path="/my-vacancies/:id" element={<MyVacancy/>}/>*/}
           {/*<Route path="/active-vacancies" element={<ActiveVacancies/>}/>*/}
