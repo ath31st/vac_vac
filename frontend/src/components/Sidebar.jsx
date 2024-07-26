@@ -1,5 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
+import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { performLogout } from '../redux/authSlice'
 
 const SidebarContainer = styled.div`
     width: 200px;
@@ -22,12 +25,24 @@ const SidebarButton = styled.div`
 `
 
 const Sidebar = () => {
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  const handleLogout = async () => {
+    try {
+      await dispatch(performLogout())
+      navigate('/login')
+    } catch (error) {
+      console.error('Logout failed:', error)
+    }
+  }
+
   return (
     <SidebarContainer>
       <SidebarButton>Vacancies</SidebarButton>
       <SidebarButton>My Vacancies</SidebarButton>
       <SidebarButton>Settings</SidebarButton>
-      <SidebarButton>Logout</SidebarButton>
+      <SidebarButton onClick={handleLogout}>Logout</SidebarButton>
     </SidebarContainer>
   )
 }
