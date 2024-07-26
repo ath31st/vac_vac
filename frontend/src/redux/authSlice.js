@@ -13,7 +13,7 @@ export const login = createAsyncThunk(
       return { token }
     } catch (error) {
       return rejectWithValue(
-        error.response ? error.response.data.error : 'Server error')
+        error.response ? error.response.data.message : 'Server error')
     }
   })
 
