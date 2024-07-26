@@ -19,7 +19,6 @@ const GlobalStyle = createGlobalStyle`
         min-height: 100vh;
         background: radial-gradient(#b7b7b7, #484848);
         display: grid;
-        place-content: center;
     }
 `
 
