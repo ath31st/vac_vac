@@ -3,6 +3,8 @@ import styled from 'styled-components'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { performLogout } from '../redux/authSlice'
+import StyledLink from './link/StyledLink'
+import StyledButtonLink from './button/StyledButtonLink'
 
 const SidebarContainer = styled.div`
     width: 200px;
@@ -10,18 +12,7 @@ const SidebarContainer = styled.div`
     display: flex;
     flex-direction: column;
     padding: 20px;
-`
-
-const SidebarButton = styled.div`
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    text-align: center;
-    cursor: pointer;
-
-    &:hover {
-        background-color: #f0f0f0;
-    }
+    gap: 20px;
 `
 
 const Sidebar = () => {
@@ -39,10 +30,9 @@ const Sidebar = () => {
 
   return (
     <SidebarContainer>
-      <SidebarButton>Vacancies</SidebarButton>
-      <SidebarButton>My Vacancies</SidebarButton>
-      <SidebarButton>Settings</SidebarButton>
-      <SidebarButton onClick={handleLogout}>Logout</SidebarButton>
+      <StyledLink to="/vacancies">Vacancies</StyledLink>
+      <StyledLink to="/my-vacancies">My Vacancies</StyledLink>
+      <StyledButtonLink onClick={handleLogout} to="">Logout</StyledButtonLink>
     </SidebarContainer>
   )
 }
