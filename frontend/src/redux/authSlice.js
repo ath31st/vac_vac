@@ -32,7 +32,7 @@ const authSlice = createSlice({
   name: 'auth',
   initialState: {
     token: localStorage.getItem('jwtToken'),
-    isAuthenticated: null,
+    isAuthenticated: !!localStorage.getItem('jwtToken'),
     error: null,
   },
   reducers: {},
