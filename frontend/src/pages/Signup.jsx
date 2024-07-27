@@ -110,6 +110,7 @@ const Signup = () => {
           value={formData.role}
           onChange={handleChange}
           options={roles}
+          placeholder={'Select a role'}
         />
         <InputField
           type="password"

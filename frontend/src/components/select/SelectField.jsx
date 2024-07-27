@@ -9,10 +9,10 @@ const StyledSelect = styled.select`
     border-radius: 4px;
 `
 
-const SelectField = ({ name, value, onChange, options }) => {
+const SelectField = ({ name, value, onChange, options, placeholder }) => {
   return (
     <StyledSelect name={name} value={value} onChange={onChange}>
-      <option value="" disabled>Select a role</option>
+      <option value="" disabled>{placeholder}</option>
       {options.map(option => (
         <option key={option.id} value={option.id}>
           {option.name}

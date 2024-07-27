@@ -52,6 +52,7 @@ const CreateVacancy = () => {
 
   const [englishLevelOptions, setEnglishLevelOptions] = useState([])
   const [gradeOptions, setGradeOptions] = useState([])
+  const [tagsOptions, setTagsOptions] = useState([])
   const navigate = useNavigate()
 
   const handleChange = (e) => {
@@ -95,6 +96,19 @@ const CreateVacancy = () => {
     fetchGrades()
   }, [])
 
+  useEffect(() => {
+    const fetchTags = async () => {
+      try {
+        const response = await axios.get(`/api/v1/vacancies/tags`)
+        setTagsOptions(response.data)
+      } catch (error) {
+        console.error('Error fetching tags:', error)
+      }
+    }
+
+    fetchTags()
+  }, [])
+
   return (
     <Container>
       <Sidebar/>
@@ -127,6 +141,7 @@ const CreateVacancy = () => {
             value={formData.englishLevel}
             onChange={handleChange}
             options={englishLevelOptions}
+            placeholder={'Select an english level'}
           />
         </FieldContainer>
         <FieldContainer>
@@ -136,6 +151,7 @@ const CreateVacancy = () => {
             value={formData.grade}
             onChange={handleChange}
             options={gradeOptions}
+            placeholder={'Select a grade'}
           />
         </FieldContainer>
         <FieldContainer>
