@@ -1,27 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import styled from 'styled-components'
 import { useDispatch, useSelector } from 'react-redux'
 import InputField from '../components/input/InputField'
 import SubmitButton from '../components/button/SubmitButton'
 import ErrorMessage from '../components/message/ErrorMessage'
 import { useNavigate } from 'react-router-dom'
 import { login } from '../redux/authSlice'
-
-const Container = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-`
-
-const Form = styled.form`
-    display: flex;
-    flex-direction: column;
-    background: #b7b7b7;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-`
+import SignInUpForm from '../components/form/SIgnInUpForm'
+import SignInUpContainer from '../components/container/SignInUpContainer'
 
 const Login = () => {
   const [formState, setFormState] = useState({
@@ -54,8 +39,8 @@ const Login = () => {
   }, [isAuthenticated, navigate])
 
   return (
-    <Container>
-      <Form onSubmit={handleSubmit}>
+    <SignInUpContainer>
+      <SignInUpForm onSubmit={handleSubmit}>
         <h2>Login</h2>
         <InputField
           type="email"
@@ -73,8 +58,8 @@ const Login = () => {
         />
         {error && <ErrorMessage>{error}</ErrorMessage>}
         <SubmitButton type="submit">Sign In</SubmitButton>
-      </Form>
-    </Container>
+      </SignInUpForm>
+    </SignInUpContainer>
   )
 }
 
