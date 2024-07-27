@@ -18,7 +18,7 @@ const SidebarContainer = styled.div`
 const Sidebar = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const role = useSelector(state => state.auth.user.role)
+  const role = useSelector(state => state.auth.user?.role)
 
   const handleLogout = async () => {
     try {
