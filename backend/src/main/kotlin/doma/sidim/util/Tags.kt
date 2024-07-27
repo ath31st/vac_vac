@@ -25,6 +25,10 @@ enum class Tags(private val displayName: String) {
     MANUFACTURING("Manufacturing"),
     LOGISTICS("Logistics");
 
+    override fun toString(): String {
+        return displayName
+    }
+
     companion object {
         fun fromDisplayName(displayName: String): Tags? {
             return entries.find { it.displayName == displayName }

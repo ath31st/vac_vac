@@ -64,14 +64,14 @@ fun Route.vacancyRoutes(vacancyService: VacancyService) {
         get("/vacancies/tags") {
             call.respond(
                 HttpStatusCode.OK,
-                Tags.entries.map { tag -> TagDto(tag.ordinal, tag.name) })
+                Tags.entries.map { tag -> TagDto(tag.ordinal, tag.toString()) })
         }
 
         get("/vacancies/education-levels") {
             call.respond(
                 HttpStatusCode.OK,
                 EducationLevels.entries.map { education ->
-                    EducationLevelDto(education.ordinal, education.name)
+                    EducationLevelDto(education.ordinal, education.toString())
                 }
             )
         }
@@ -80,7 +80,7 @@ fun Route.vacancyRoutes(vacancyService: VacancyService) {
             call.respond(
                 HttpStatusCode.OK,
                 EnglishLevels.entries.map { english ->
-                    EnglishLevelDto(english.ordinal, english.name)
+                    EnglishLevelDto(english.ordinal, english.toString())
                 }
             )
         }
