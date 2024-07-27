@@ -1,6 +1,6 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
 import styled from 'styled-components'
+import { useSelector } from 'react-redux'
 
 const HeaderContainer = styled.header`
     background-color: #333;
@@ -16,22 +16,22 @@ const NavLinks = styled.div`
     gap: 15px;
 `
 
-const StyledLink = styled(Link)`
-    color: white;
-    text-decoration: none;
-
-    &:hover {
-        text-decoration: underline;
-    }
+const Text = styled.span`
+    color: #ccc;
 `
 
 const Header = () => {
+  const user = useSelector((state) => state.auth.user)
+
   return (
     <HeaderContainer>
       <h1>Vac Vac Project</h1>
       <NavLinks>
-        <StyledLink to="/">Home</StyledLink>
-        <StyledLink to="/vacancies">Vacancies</StyledLink>
+        {user !== null ? (
+            <Text>{user.email}</Text>
+        ) : (
+          <Text>You are not authorized</Text>
+        )}
       </NavLinks>
     </HeaderContainer>
   )
