@@ -1,5 +1,8 @@
 package doma.sidim.route
 
+import doma.sidim.dto.EducationLevelDto
+import doma.sidim.dto.EnglishLevelDto
+import doma.sidim.dto.TagDto
 import doma.sidim.dto.VacancyCreationDto
 import doma.sidim.model.Vacancy
 import doma.sidim.service.VacancyService
@@ -61,14 +64,14 @@ fun Route.vacancyRoutes(vacancyService: VacancyService) {
         get("/vacancies/tags") {
             call.respond(
                 HttpStatusCode.OK,
-                Tags.entries.map { tag -> mapOf(tag.ordinal to tag.name) })
+                Tags.entries.map { tag -> TagDto(tag.ordinal, tag.name) })
         }
 
         get("/vacancies/education-levels") {
             call.respond(
                 HttpStatusCode.OK,
                 EducationLevels.entries.map { education ->
-                    mapOf(education.ordinal to education.name)
+                    EducationLevelDto(education.ordinal, education.name)
                 }
             )
         }
@@ -76,7 +79,9 @@ fun Route.vacancyRoutes(vacancyService: VacancyService) {
         get("/vacancies/english-levels") {
             call.respond(
                 HttpStatusCode.OK,
-                EnglishLevels.entries.map { english -> mapOf(english.ordinal to english.name) }
+                EnglishLevels.entries.map { english ->
+                    EnglishLevelDto(english.ordinal, english.name)
+                }
             )
         }
     }
