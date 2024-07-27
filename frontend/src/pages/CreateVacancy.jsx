@@ -1,5 +1,3 @@
-// src/pages/CreateVacancy.jsx
-
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import InputField from '../components/input/InputField'
@@ -14,7 +12,7 @@ const Container = styled.div`
 
 const FormContainer = styled.div`
     padding: 20px;
-    width: 80%;
+    width: 600px;
 `
 
 const Title = styled.h1`
