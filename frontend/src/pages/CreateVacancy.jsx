@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import InputField from '../components/input/InputField'
 import SelectField from '../components/select/SelectField'
 import SubmitButton from '../components/button/SubmitButton'
 import Sidebar from '../components/Sidebar'
 import { useNavigate } from 'react-router-dom'
+import axios from '../config/axiosConfig'
 
 const Container = styled.div`
     display: flex;
@@ -49,6 +50,8 @@ const CreateVacancy = () => {
     tags: '',
   })
 
+  const [englishLevelOptions, setEnglishLevelOptions] = useState([])
+  const [gradeOptions, setGradeOptions] = useState([])
   const navigate = useNavigate()
 
   const handleChange = (e) => {
@@ -66,17 +69,31 @@ const CreateVacancy = () => {
     navigate('/vacancies')
   }
 
-  const englishLevelOptions = [
-    { id: 'beginner', name: 'Beginner' },
-    { id: 'intermediate', name: 'Intermediate' },
-    { id: 'advanced', name: 'Advanced' },
-  ]
+  useEffect(() => {
+    const fetchEnglishLevels = async () => {
+      try {
+        const response = await axios.get(`/api/v1/vacancies/english-levels`)
+        setEnglishLevelOptions(response.data)
+      } catch (error) {
+        console.error('Error fetching english levels:', error)
+      }
+    }
 
-  const gradeOptions = [
-    { id: 'junior', name: 'Junior' },
-    { id: 'mid', name: 'Mid' },
-    { id: 'senior', name: 'Senior' },
-  ]
+    fetchEnglishLevels()
+  }, [])
+
+  useEffect(() => {
+    const fetchGrades = async () => {
+      try {
+        const response = await axios.get(`/api/v1/vacancies/education-levels`)
+        setGradeOptions(response.data)
+      } catch (error) {
+        console.error('Error fetching grades:', error)
+      }
+    }
+
+    fetchGrades()
+  }, [])
 
   return (
     <Container>
