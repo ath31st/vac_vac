@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { performLogout } from '../redux/authSlice'
 import StyledLink from './link/StyledLink'
@@ -18,6 +18,7 @@ const SidebarContainer = styled.div`
 const Sidebar = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const role = useSelector(state => state.auth.user.role)
 
   const handleLogout = async () => {
     try {
@@ -31,7 +32,14 @@ const Sidebar = () => {
   return (
     <SidebarContainer>
       <StyledLink to="/vacancies">Vacancies</StyledLink>
-      <StyledLink to="/my-vacancies">My Vacancies</StyledLink>
+      {role === 0 ? (
+        <StyledLink to="/my-vacancies">My Vacancies</StyledLink>
+      ) : (
+        <>
+          <StyledLink to="/active-vacancies">Active Vacancies</StyledLink>
+          <StyledLink to="/create-vacancy">Create Vacancy</StyledLink>
+        </>
+      )}
       <StyledButtonLink onClick={handleLogout} to="">Logout</StyledButtonLink>
     </SidebarContainer>
   )
