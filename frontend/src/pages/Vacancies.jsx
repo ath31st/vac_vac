@@ -3,7 +3,7 @@ import Vacancy from '../components/Vacancy'
 import Sidebar from '../components/Sidebar'
 import { useEffect, useState } from 'react'
 import VacancyDetails from '../components/VacancyDetails'
-import axios from 'axios'
+import axios from '../config/axiosConfig'
 
 const Container = styled.div`
     display: flex;
@@ -22,14 +22,13 @@ const VacanciesContainer = styled.div`
 `
 
 const Vacancies = () => {
-  const apiUrl = process.env.REACT_APP_API_BASE_URL
   const [selectedVacancy, setSelectedVacancy] = useState(null)
   const [vacancies, setVacancies] = useState([])
 
   useEffect(() => {
     const fetchVacancies = async () => {
       try {
-        const response = await axios.get(`${apiUrl}/api/v1/vacancies`)
+        const response = await axios.get(`/api/v1/vacancies`)
         setVacancies(response.data)
       } catch (error) {
         console.error('Error fetching Vacancies:', error)
@@ -37,7 +36,7 @@ const Vacancies = () => {
     }
 
     fetchVacancies()
-  }, [apiUrl])
+  }, [])
 
   const handleVacancyClick = (vacancy) => {
     if (selectedVacancy === vacancy) {
