@@ -6,6 +6,7 @@ import Vacancies from './pages/Vacancies'
 import HomePage from './pages/HomePage'
 import Login from './pages/Login'
 import PrivateRoute from './components/PrivateRoute'
+import CreateVacancy from './pages/CreateVacancy'
 
 function App () {
   return (
@@ -21,7 +22,7 @@ function App () {
           {/*<Route path="/my-vacancies/:id" element={<MyVacancy/>}/>*/}
           {/*<Route path="/active-vacancies" element={<ActiveVacancies/>}/>*/}
           {/*<Route path="/active-vacancies/:id" element={<ActiveVacancy/>}/>*/}
-          {/*<Route path="/create-vacancy" element={<CreateVacancy/>}/>*/}
+          <Route path="/create-vacancy" element={<CreateVacancy/>}/>
           <Route path="*" element={<NotFoundPage/>}/>
         </Route>
       </Routes>
