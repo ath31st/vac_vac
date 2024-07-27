@@ -132,8 +132,8 @@ const CreateVacancy = () => {
           />
         </FieldContainer>
         <ButtonContainer>
-          <SubmitButton onClick={handleClose} color="red">Close</SubmitButton>
-          <SubmitButton onClick={handleSave} color="green">Save</SubmitButton>
+          <SubmitButton onClick={handleClose}>Close</SubmitButton>
+          <SubmitButton onClick={handleSave}>Save</SubmitButton>
         </ButtonContainer>
       </FormContainer>
     </Container>
