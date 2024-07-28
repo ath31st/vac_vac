@@ -48,7 +48,7 @@ const CreateVacancy = () => {
     description: '',
     englishLevel: '',
     grade: '',
-    tags: '',
+    tags: [],
   })
 
   const [englishLevelOptions, setEnglishLevelOptions] = useState([])
@@ -64,7 +64,7 @@ const CreateVacancy = () => {
   }
 
   const handleSave = () => {
-    // Implement save functionality
+    console.log(formData)
   }
 
   const handleClose = () => {
@@ -80,9 +80,11 @@ const CreateVacancy = () => {
             axios.get(`/api/v1/vacancies/education-levels`),
             axios.get(`/api/v1/vacancies/tags`),
           ])
+
         setEnglishLevelOptions(englishLevelsResponse.data)
         setGradeOptions(gradesResponse.data)
-        setTagsOptions(tagsResponse.data)
+        setTagsOptions(
+          tagsResponse.data.map(tag => ({ label: tag.name, value: tag.id })))
       } catch (error) {
         console.error('Error fetching data:', error)
       }
@@ -123,7 +125,7 @@ const CreateVacancy = () => {
             value={formData.englishLevel}
             onChange={handleChange}
             options={englishLevelOptions}
-            placeholder={'Select an english level'}
+            placeholder="Select an english level"
           />
         </FieldContainer>
         <FieldContainer>
@@ -133,7 +135,7 @@ const CreateVacancy = () => {
             value={formData.grade}
             onChange={handleChange}
             options={gradeOptions}
-            placeholder={'Select a grade'}
+            placeholder="Select a grade"
           />
         </FieldContainer>
         <FieldContainer>
@@ -143,7 +145,7 @@ const CreateVacancy = () => {
             value={formData.tags}
             onChange={handleChange}
             options={tagsOptions}
-            placeholder={'Select a tags'}
+            placeholder="Select tags"
           />
         </FieldContainer>
         <ButtonContainer>
