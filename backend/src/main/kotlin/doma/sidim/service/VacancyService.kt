@@ -12,8 +12,8 @@ class VacancyService(private val vacancyRepository: VacancyRepository) {
         val vacancy = Vacancy(
             title = dto.title,
             description = dto.description,
-            englishLevel = EnglishLevels.entries[dto.englishLevelId],
-            grade = EducationLevels.entries[dto.gradeId],
+            englishLevel = EnglishLevels.entries[dto.englishLevel],
+            grade = EducationLevels.entries[dto.grade],
             tags = Tags.fromSetIds(dto.tags),
             isVisible = true,
             creatorId = creatorId,

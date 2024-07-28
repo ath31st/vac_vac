@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 data class VacancyCreationDto(
     val title: String,
     val description: String,
-    val englishLevelId: Int,
-    val gradeId: Int,
+    val englishLevel: Int,
+    val grade: Int,
     val tags: Set<Int>,
 )
