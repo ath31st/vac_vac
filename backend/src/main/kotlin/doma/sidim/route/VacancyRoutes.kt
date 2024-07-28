@@ -19,10 +19,10 @@ import io.ktor.server.routing.*
 
 fun Route.vacancyRoutes(vacancyService: VacancyService) {
     authenticate("auth-jwt") {
-        post("/vacancies/") {
+        post("/vacancies") {
             val principal = call.authentication.principal<JWTPrincipal>()
             principal?.let {
-                val authUserId = principal.payload.getClaim("id").asLong()
+                val authUserId = principal.payload.getClaim("user_id").asLong()
                 val vacancyDto = call.receive<VacancyCreationDto>()
                 val id = vacancyService.createVacancy(vacancyDto, authUserId)
                 call.respond(HttpStatusCode.Created, id)
