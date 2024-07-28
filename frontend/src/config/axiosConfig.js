@@ -1,8 +1,6 @@
 import axios from 'axios'
 import store from '../redux/store'
 import { performLogout } from '../redux/authSlice'
-import { useDispatch } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
 
 const apiUrl = process.env.REACT_APP_API_BASE_URL
 
@@ -22,12 +20,9 @@ axios.interceptors.request.use(
 axios.interceptors.response.use(
   response => response,
   error => {
-
-    const dispatch = useDispatch()
-    const navigate = useNavigate()
     if (error.response && error.response.status === 401) {
-      dispatch(performLogout())
-      navigate('/login')
+      store.dispatch(performLogout())
+      window.location.href = '/login'
     }
     return Promise.reject(error)
   },
