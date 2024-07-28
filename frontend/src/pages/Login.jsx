@@ -3,10 +3,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import InputField from '../components/input/InputField'
 import SubmitButton from '../components/button/SubmitButton'
 import ErrorMessage from '../components/message/ErrorMessage'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { login } from '../redux/authSlice'
 import SignInUpForm from '../components/form/SIgnInUpForm'
 import SignInUpContainer from '../components/container/SignInUpContainer'
+import LabelWithLink from '../components/label/LabelWithLink'
 
 const Login = () => {
   const [formState, setFormState] = useState({
@@ -58,6 +59,9 @@ const Login = () => {
         />
         {error && <ErrorMessage>{error}</ErrorMessage>}
         <SubmitButton type="submit">Sign In</SubmitButton>
+        <LabelWithLink>
+          Don't have an account? <Link to="/signup">Register here</Link>
+        </LabelWithLink>
       </SignInUpForm>
     </SignInUpContainer>
   )
