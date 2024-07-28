@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { performLogout } from '../redux/authSlice'
 import StyledLink from './link/StyledLink'
 import StyledButtonLink from './button/StyledButtonLink'
+import SidebarButton from './button/SidebarButton'
 
 const SidebarContainer = styled.div`
     width: 200px;
@@ -15,7 +16,7 @@ const SidebarContainer = styled.div`
     gap: 20px;
 `
 
-const Sidebar = () => {
+const Sidebar = ({ setView }) => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const role = useSelector(state => state.auth.user?.role)
@@ -31,14 +32,12 @@ const Sidebar = () => {
 
   return (
     <SidebarContainer>
-      <StyledLink to="/vacancies">Vacancies</StyledLink>
-      {role === 0 ? (
-        <StyledLink to="/my-vacancies">My Vacancies</StyledLink>
-      ) : (
-        <>
-          <StyledLink to="/active-vacancies">Active Vacancies</StyledLink>
-          <StyledLink to="/create-vacancy">Create Vacancy</StyledLink>
-        </>
+      <SidebarButton onClick={() => setView('all')}>Vacancies</SidebarButton>
+      <SidebarButton onClick={() => setView('my')}>
+        {role === 1 ? 'Active vacancies' : 'My vacancies'}
+      </SidebarButton>
+      {role === 1 && (
+        <StyledLink to="/create-vacancy">Create vacancy</StyledLink>
       )}
       <StyledButtonLink onClick={handleLogout} to="">Logout</StyledButtonLink>
     </SidebarContainer>
