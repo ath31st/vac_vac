@@ -9,9 +9,11 @@ const StyledSelect = styled.select`
     border-radius: 4px;
 `
 
-const SelectField = ({ name, value, onChange, options, placeholder }) => {
+const SelectField = ({ id, name, value, onChange, options, placeholder }) => {
+  const selectId = id || name
+
   return (
-    <StyledSelect name={name} value={value} onChange={onChange}>
+    <StyledSelect id={selectId} name={name} value={value} onChange={onChange}>
       <option value="" disabled>{placeholder}</option>
       {options.map(option => (
         <option key={option.id} value={option.id}>

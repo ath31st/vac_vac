@@ -9,9 +9,12 @@ const StyledInput = styled.input`
     border-radius: 4px;
 `
 
-const InputField = ({ type, name, placeholder, value, onChange }) => {
+const InputField = ({ id, type, name, placeholder, value, onChange }) => {
+  const inputId = id || name
+
   return (
     <StyledInput
+      id={inputId}
       type={type}
       name={name}
       placeholder={placeholder}
