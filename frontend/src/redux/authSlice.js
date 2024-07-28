@@ -12,7 +12,8 @@ export const login = createAsyncThunk(
   'auth/login',
   async (formData, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.post(`${apiUrl}/api/v1/auth`, formData)
+      const response = await axiosInstance.post(`${apiUrl}/api/v1/auth`,
+        formData)
       const { token } = response.data
       const user = jwtDecode(token)
       localStorage.setItem('jwtToken', token)
