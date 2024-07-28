@@ -43,9 +43,7 @@ const VacancyDetails = ({ vacancy }) => {
       <VacancyDescription>{vacancy.description}</VacancyDescription>
       <h3>Contacts</h3>
       <Tags>
-        {vacancy.tags.map((tag, index) => (
-          <Tag key={tag.id || index}>{tag}</Tag>
-        ))}
+        {vacancy.tags.map((tag) => (<Tag key={tag.id}>{tag.name}</Tag>))}
       </Tags>
       <button>Cancel response</button>
     </Container>
