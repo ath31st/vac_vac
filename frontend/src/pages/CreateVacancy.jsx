@@ -7,6 +7,7 @@ import Sidebar from '../components/Sidebar'
 import { useNavigate } from 'react-router-dom'
 import axios from '../config/axiosConfig'
 import MultiSelectField from '../components/select/MultiSelectField'
+import ErrorMessage from '../components/message/ErrorMessage'
 
 const Container = styled.div`
     display: flex;
@@ -54,6 +55,7 @@ const CreateVacancy = () => {
   const [englishLevelOptions, setEnglishLevelOptions] = useState([])
   const [gradeOptions, setGradeOptions] = useState([])
   const [tagsOptions, setTagsOptions] = useState([])
+  const [error, setError] = useState('')
   const navigate = useNavigate()
 
   const handleChange = (e) => {
@@ -63,8 +65,19 @@ const CreateVacancy = () => {
     })
   }
 
-  const handleSave = () => {
+  const handleSave = async () => {
     console.log(formData)
+    try {
+      await axios.post(`/api/v1/vacancies`, formData)
+      navigate('/vacancies')
+    } catch (error) {
+      console.error('Error during creation vacancy:', error)
+      if (error.response && error.response.data) {
+        setError(`Creation vacancy failed with cause: ${error.response.data}.`)
+      } else {
+        setError(`Creation vacancy failed. Please try again.`)
+      }
+    }
   }
 
   const handleClose = () => {
@@ -148,6 +161,7 @@ const CreateVacancy = () => {
             placeholder="Select tags"
           />
         </FieldContainer>
+        {error && <ErrorMessage>{error}</ErrorMessage>}
         <ButtonContainer>
           <SubmitButton onClick={handleClose}>Close</SubmitButton>
           <SubmitButton onClick={handleSave}>Save</SubmitButton>
