@@ -51,13 +51,28 @@ fun Route.vacancyRoutes(vacancyService: VacancyService) {
             }
         }
 
-        get("/vacancies/active") {
+        get("/vacancies/employer") {
             val principal = call.authentication.principal<JWTPrincipal>()
             principal?.let {
                 if (principal.payload.getClaim("role").asInt() != Roles.EMPLOYER.ordinal) {
                     call.respond(HttpStatusCode.Forbidden)
                 }
                 val authUserId = principal.payload.getClaim("user_id").asLong()
+                val vacancyDtos = vacancyService.getAllVacanciesByCreator(authUserId)
+                call.respond(HttpStatusCode.OK, vacancyDtos)
+            } ?: run {
+                call.respond(HttpStatusCode.Unauthorized, "Unauthorized")
+            }
+        }
+
+        get("/vacancies/employee") {
+            val principal = call.authentication.principal<JWTPrincipal>()
+            principal?.let {
+                if (principal.payload.getClaim("role").asInt() != Roles.EMPLOYEE.ordinal) {
+                    call.respond(HttpStatusCode.Forbidden)
+                }
+                val authUserId = principal.payload.getClaim("user_id").asLong()
+                // todo add user responded vacancies
                 val vacancyDtos = vacancyService.getAllVacanciesByCreator(authUserId)
                 call.respond(HttpStatusCode.OK, vacancyDtos)
             } ?: run {
