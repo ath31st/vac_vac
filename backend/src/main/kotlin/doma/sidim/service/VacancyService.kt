@@ -35,7 +35,7 @@ class VacancyService(private val vacancyRepository: VacancyRepository) {
         return vacancyRepository.getActiveVacancies().map { it.toDto() }
     }
 
-    fun getAllActiveVacancyByCreator(creatorId: Long): List<VacancyDto> {
+    fun getAllVacanciesByCreator(creatorId: Long): List<VacancyDto> {
         return vacancyRepository.getVacanciesByCreator(creatorId).map { it.toDto() }
     }
 
