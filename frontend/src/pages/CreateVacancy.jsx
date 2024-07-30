@@ -66,7 +66,6 @@ const CreateVacancy = () => {
   }
 
   const handleSave = async () => {
-    console.log(formData)
     try {
       await axios.post(`/api/v1/vacancies`, formData)
       navigate('/vacancies')
@@ -114,6 +113,7 @@ const CreateVacancy = () => {
         <FieldContainer>
           <Label htmlFor="title">Vacancy Title</Label>
           <InputField
+            id="title"
             type="text"
             name="title"
             placeholder="Vacancy Title"
@@ -124,6 +124,7 @@ const CreateVacancy = () => {
         <FieldContainer>
           <Label htmlFor="description">Vacancy Description</Label>
           <InputField
+            id="description"
             type="text"
             name="description"
             placeholder="Vacancy Description"
@@ -134,6 +135,7 @@ const CreateVacancy = () => {
         <FieldContainer>
           <Label htmlFor="englishLevel">English Level</Label>
           <SelectField
+            id="englishLevel"
             name="englishLevel"
             value={formData.englishLevel}
             onChange={handleChange}
@@ -144,6 +146,7 @@ const CreateVacancy = () => {
         <FieldContainer>
           <Label htmlFor="grade">Grade</Label>
           <SelectField
+            id="grade"
             name="grade"
             value={formData.grade}
             onChange={handleChange}

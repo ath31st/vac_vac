@@ -4,11 +4,16 @@ import { jwtDecode } from 'jwt-decode'
 
 const apiUrl = process.env.REACT_APP_API_BASE_URL
 
+const axiosInstance = axios.create({
+  baseURL: apiUrl,
+})
+
 export const login = createAsyncThunk(
   'auth/login',
   async (formData, { rejectWithValue }) => {
     try {
-      const response = await axios.post(`${apiUrl}/api/v1/auth`, formData)
+      const response = await axiosInstance.post(`${apiUrl}/api/v1/auth`,
+        formData)
       const { token } = response.data
       const user = jwtDecode(token)
       localStorage.setItem('jwtToken', token)

@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 
 const StyledButton = styled.button`
+    font-size: 16px;
     width: 160px;
     padding: 10px 20px;
     text-decoration: none;

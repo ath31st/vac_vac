@@ -4,6 +4,7 @@ import Sidebar from '../components/Sidebar'
 import { useEffect, useState } from 'react'
 import VacancyDetails from '../components/VacancyDetails'
 import axios from '../config/axiosConfig'
+import { useSelector } from 'react-redux'
 
 const Container = styled.div`
     display: flex;
@@ -24,11 +25,18 @@ const VacanciesContainer = styled.div`
 const Vacancies = () => {
   const [selectedVacancy, setSelectedVacancy] = useState(null)
   const [vacancies, setVacancies] = useState([])
+  const [view, setView] = useState('all')
+  const role = useSelector(state => state.auth.user?.role)
 
   useEffect(() => {
     const fetchVacancies = async () => {
       try {
-        const response = await axios.get(`/api/v1/vacancies`)
+        const endpoint = view === 'my'
+          ? role === 0
+            ? `/api/v1/vacancies/my`
+            : `/api/v1/vacancies/active`
+          : `/api/v1/vacancies`
+        const response = await axios.get(endpoint)
         setVacancies(response.data)
       } catch (error) {
         console.error('Error fetching Vacancies:', error)
@@ -36,7 +44,7 @@ const Vacancies = () => {
     }
 
     fetchVacancies()
-  }, [])
+  }, [view, role])
 
   const handleVacancyClick = (vacancy) => {
     if (selectedVacancy === vacancy) {
@@ -48,7 +56,7 @@ const Vacancies = () => {
 
   return (
     <Container>
-      <Sidebar/>
+      <Sidebar setView={setView}/>
       <MainContent>
         <VacanciesContainer>
           {vacancies.map((vacancy) => (

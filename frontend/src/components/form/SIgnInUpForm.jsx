@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 
 const SignInUpForm = styled.form`
+    gap: 5px;
     width: 300px;
     display: flex;
     align-items: center;
