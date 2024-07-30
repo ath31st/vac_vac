@@ -25,18 +25,12 @@ const VacanciesContainer = styled.div`
 const Vacancies = () => {
   const [selectedVacancy, setSelectedVacancy] = useState(null)
   const [vacancies, setVacancies] = useState([])
-  const [view, setView] = useState('all')
   const role = useSelector(state => state.auth.user?.role)
 
   useEffect(() => {
     const fetchVacancies = async () => {
       try {
-        const endpoint = view === 'my'
-          ? role === 0
-            ? `/api/v1/vacancies/my`
-            : `/api/v1/vacancies/active`
-          : `/api/v1/vacancies`
-        const response = await axios.get(endpoint)
+        const response = await axios.get('/api/v1/vacancies')
         setVacancies(response.data)
       } catch (error) {
         console.error('Error fetching Vacancies:', error)
@@ -44,7 +38,7 @@ const Vacancies = () => {
     }
 
     fetchVacancies()
-  }, [view, role])
+  }, [role])
 
   const handleVacancyClick = (vacancy) => {
     if (selectedVacancy === vacancy) {
@@ -56,7 +50,7 @@ const Vacancies = () => {
 
   return (
     <Container>
-      <Sidebar setView={setView}/>
+      <Sidebar/>
       <MainContent>
         <VacanciesContainer>
           {vacancies.map((vacancy) => (
