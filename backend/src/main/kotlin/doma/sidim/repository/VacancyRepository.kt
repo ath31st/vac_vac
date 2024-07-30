@@ -24,18 +24,8 @@ class VacancyRepository : CrudRepository<Vacancy> {
     override fun read(id: Long): Vacancy? {
         return transaction {
             Vacancies.select { Vacancies.id eq id }
-                .mapNotNull {
-                    Vacancy(
-                        id = it[Vacancies.id],
-                        title = it[Vacancies.title],
-                        description = it[Vacancies.description],
-                        englishLevel = EnglishLevels.entries[it[Vacancies.englishLevel]],
-                        grade = EducationLevels.entries[it[Vacancies.grade]],
-                        tags = Tags.fromListIds(it[Vacancies.tags]),
-                        isVisible = it[Vacancies.isVisible],
-                        creatorId = it[Vacancies.creatorId],
-                    )
-                }.singleOrNull()
+                .mapNotNull { it.toVacancy() }
+                .singleOrNull()
         }
     }
 
@@ -55,18 +45,15 @@ class VacancyRepository : CrudRepository<Vacancy> {
 
     fun getActiveVacancies(): List<Vacancy> {
         return transaction {
-            Vacancies.selectAll().map {
-                Vacancy(
-                    id = it[Vacancies.id],
-                    title = it[Vacancies.title],
-                    description = it[Vacancies.description],
-                    englishLevel = EnglishLevels.entries[it[Vacancies.englishLevel]],
-                    grade = EducationLevels.entries[it[Vacancies.grade]],
-                    tags = Tags.fromListIds(it[Vacancies.tags]),
-                    isVisible = it[Vacancies.isVisible],
-                    creatorId = it[Vacancies.creatorId],
-                )
-            }
+            Vacancies.select { Vacancies.isVisible eq true }
+                .map { it.toVacancy() }
+        }
+    }
+
+    fun getVacanciesByCreator(creatorId: Long): List<Vacancy> {
+        return transaction {
+            Vacancies.select { Vacancies.creatorId eq creatorId }
+                .mapNotNull { it.toVacancy() }
         }
     }
 
@@ -78,5 +65,18 @@ class VacancyRepository : CrudRepository<Vacancy> {
         statement[Vacancies.tags] = item.tags.map { tag -> tag.ordinal }.joinToString(",")
         statement[Vacancies.isVisible] = item.isVisible
         statement[Vacancies.creatorId] = item.creatorId
+    }
+
+    private fun ResultRow.toVacancy(): Vacancy {
+        return Vacancy(
+            id = this[Vacancies.id],
+            title = this[Vacancies.title],
+            description = this[Vacancies.description],
+            englishLevel = EnglishLevels.entries[this[Vacancies.englishLevel]],
+            grade = EducationLevels.entries[this[Vacancies.grade]],
+            tags = Tags.fromListIds(this[Vacancies.tags]),
+            isVisible = this[Vacancies.isVisible],
+            creatorId = this[Vacancies.creatorId],
+        )
     }
 }
