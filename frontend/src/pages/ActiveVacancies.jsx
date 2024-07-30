@@ -17,7 +17,7 @@ const ActiveVacancies = () => {
     <Container>
       <Sidebar/>
       <MainContent>
-        <VacanciesList endpoint="/api/v1/vacancies/active"/>
+        <VacanciesList endpoint="/api/v1/vacancies/employer"/>
       </MainContent>
     </Container>
   )

@@ -17,7 +17,7 @@ const MyVacancies = () => {
     <Container>
       <Sidebar/>
       <MainContent>
-        <VacanciesList endpoint="/api/v1/vacancies"/>
+        <VacanciesList endpoint="/api/v1/vacancies/employee"/>
       </MainContent>
     </Container>
   )
