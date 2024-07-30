@@ -32,17 +32,23 @@ class VacancyService(private val vacancyRepository: VacancyRepository) {
     }
 
     fun getAllActiveVacancies(): List<VacancyDto> {
-        return vacancyRepository.getActiveVacancies().map {
-            VacancyDto(
-                it.id,
-                it.title,
-                it.description,
-                it.grade.toString(),
-                it.englishLevel.toString(),
-                it.tags.map { tag -> TagDto(tag.ordinal, tag.toString()) },
-                it.isVisible,
-                it.creatorId,
-            )
-        }
+        return vacancyRepository.getActiveVacancies().map { it.toDto() }
+    }
+
+    fun getAllActiveVacancyByCreator(creatorId: Long): List<VacancyDto> {
+        return vacancyRepository.getVacanciesByCreator(creatorId).map { it.toDto() }
+    }
+
+    private fun Vacancy.toDto(): VacancyDto {
+        return VacancyDto(
+            id = this.id,
+            title = this.title,
+            description = this.description,
+            englishLevel = this.englishLevel.toString(),
+            grade = this.grade.toString(),
+            tags = this.tags.map { tag -> TagDto(tag.ordinal, tag.toString()) },
+            isVisible = this.isVisible,
+            creatorId = this.creatorId,
+        )
     }
 }
