@@ -3,6 +3,7 @@ package doma.sidim
 import doma.sidim.plugins.*
 import doma.sidim.repository.UserRepository
 import doma.sidim.repository.VacancyRepository
+import doma.sidim.repository.VacancyResponseRepository
 import doma.sidim.service.UserService
 import doma.sidim.service.VacancyService
 import io.ktor.server.application.*
@@ -16,7 +17,7 @@ fun main() {
 
 fun Application.module() {
     val userService = UserService(UserRepository())
-    val vacancyService = VacancyService(VacancyRepository())
+    val vacancyService = VacancyService(VacancyRepository(), VacancyResponseRepository())
 
     configureDatabases()
     configureSecurity(userService)
