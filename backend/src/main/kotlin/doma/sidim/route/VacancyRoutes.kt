@@ -127,7 +127,7 @@ fun Route.vacancyRoutes(vacancyService: VacancyService) {
             }
         }
 
-        delete("/vacancies/{id}/unresponse") {
+        delete("/vacancies/{id}/cancel-response") {
             val id = call.extractId()
             val principal = call.principal<JWTPrincipal>()!!
             if (!principal.hasRole(Roles.EMPLOYEE)) {
@@ -137,7 +137,7 @@ fun Route.vacancyRoutes(vacancyService: VacancyService) {
             val authUserId = principal.userId()
             val isExists = vacancyService.checkResponseExists(id, authUserId)
             if (isExists) {
-                val isDelete = vacancyService.unresponseToVacancy(id, authUserId)
+                val isDelete = vacancyService.cancelResponseToVacancy(id, authUserId)
                 if (isDelete) {
                     call.respond(HttpStatusCode.NoContent)
                 } else {

@@ -53,7 +53,7 @@ class VacancyService(
         return vacancyResponseRepository.create(vr)
     }
 
-    fun unresponseToVacancy(vacancyId: Long, employeeId: Long): Boolean {
+    fun cancelResponseToVacancy(vacancyId: Long, employeeId: Long): Boolean {
         return vacancyResponseRepository.deleteByVacancyAndUserId(vacancyId, employeeId)
     }
 
