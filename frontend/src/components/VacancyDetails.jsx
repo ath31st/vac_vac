@@ -46,6 +46,7 @@ const ButtonContainer = styled.div`
 const VacancyDetails = ({ vacancy }) => {
   const [error, setError] = useState('')
   const role = useSelector(state => state.auth.user?.role)
+  const userId = useSelector(state => state.auth.user?.user_id)
 
   const handleResponseVacancy = async (vacancyId) => {
     try {
@@ -88,6 +89,8 @@ const VacancyDetails = ({ vacancy }) => {
     }
   }
 
+  const isUserCreator = vacancy.creatorId === userId
+
   return (
     <Container>
       <VacancyTitle>{vacancy.title}</VacancyTitle>
@@ -100,7 +103,12 @@ const VacancyDetails = ({ vacancy }) => {
       </Tags>
       {error && <ErrorMessage>{error}</ErrorMessage>}
       <ButtonContainer>
-        {role === 0 ? (
+        {role === 1 && isUserCreator ? (
+          <SubmitButton type="button" onClick={() =>
+            handleChangeVisibleVacancy(vacancy)}>
+            {vacancy.isVisible ? 'Close vacancy' : 'Open vacancy'}
+          </SubmitButton>
+        ) : role !== 1 ? (
           <>
             <SubmitButton type="button" onClick={() =>
               handleResponseVacancy(vacancy.id)}>
@@ -111,12 +119,7 @@ const VacancyDetails = ({ vacancy }) => {
               Cancel response
             </SubmitButton>
           </>
-        ) : (
-          <SubmitButton type="button" onClick={() =>
-            handleChangeVisibleVacancy(vacancy)}>
-            {vacancy.isVisible ? 'Close vacancy' : 'Open vacancy'}
-          </SubmitButton>
-        )}
+        ) : null}
       </ButtonContainer>
     </Container>
   )
