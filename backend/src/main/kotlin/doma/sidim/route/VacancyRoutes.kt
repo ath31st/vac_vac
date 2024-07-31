@@ -71,8 +71,7 @@ fun Route.vacancyRoutes(vacancyService: VacancyService) {
                 return@get
             }
             val authUserId = principal.userId()
-            // todo add user responded vacancies
-            val vacancyDtos = vacancyService.getAllVacanciesByCreator(authUserId)
+            val vacancyDtos = vacancyService.getVacanciesByUserResponses(authUserId)
             call.respond(HttpStatusCode.OK, vacancyDtos)
         }
 

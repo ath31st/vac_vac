@@ -2,6 +2,7 @@ package doma.sidim.repository
 
 import doma.sidim.model.Vacancies
 import doma.sidim.model.Vacancy
+import doma.sidim.model.VacancyResponses
 import doma.sidim.util.EducationLevels
 import doma.sidim.util.EnglishLevels
 import doma.sidim.util.Tags
@@ -54,6 +55,14 @@ class VacancyRepository : CrudRepository<Vacancy> {
         return transaction {
             Vacancies.select { Vacancies.creatorId eq creatorId }
                 .mapNotNull { it.toVacancy() }
+        }
+    }
+
+    fun getVacanciesByUserResponses(userId: Long): List<Vacancy> {
+        return transaction {
+            (Vacancies innerJoin VacancyResponses)
+                .select { VacancyResponses.userId eq userId }
+                .map { it.toVacancy() }
         }
     }
 

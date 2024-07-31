@@ -44,6 +44,10 @@ class VacancyService(
         return vacancyRepository.getVacanciesByCreator(creatorId).map { it.toDto() }
     }
 
+    fun getVacanciesByUserResponses(employeeId: Long): List<VacancyDto> {
+        return vacancyRepository.getVacanciesByUserResponses(employeeId).map { it.toDto() }
+    }
+
     fun responseToVacancy(vacancyId: Long, employeeId: Long): Long {
         val vr = VacancyResponse(vacancyId = vacancyId, userId = employeeId)
         return vacancyResponseRepository.create(vr)
