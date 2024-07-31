@@ -36,6 +36,10 @@ class VacancyService(
         return vacancyRepository.update(id, vacancy)
     }
 
+    fun updateVisibleVacancy(vacancyId: Long, isVisible: Boolean): Boolean {
+        return vacancyRepository.updateVisibleVacancy(vacancyId, isVisible)
+    }
+
     fun getAllActiveVacancies(): List<VacancyDto> {
         return vacancyRepository.getActiveVacancies().map { it.toDto() }
     }

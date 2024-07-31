@@ -66,6 +66,14 @@ class VacancyRepository : CrudRepository<Vacancy> {
         }
     }
 
+    fun updateVisibleVacancy(vacancyId: Long, isVisible: Boolean): Boolean {
+        return transaction {
+            Vacancies.update({ Vacancies.id eq vacancyId }) {
+                it[Vacancies.isVisible] = isVisible
+            } > 0
+        }
+    }
+
     private fun fillVacancyFields(statement: UpdateBuilder<*>, item: Vacancy) {
         statement[Vacancies.title] = item.title
         statement[Vacancies.description] = item.description

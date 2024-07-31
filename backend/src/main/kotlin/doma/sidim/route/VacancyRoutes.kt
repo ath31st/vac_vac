@@ -1,10 +1,6 @@
 package doma.sidim.route
 
-import doma.sidim.dto.EducationLevelDto
-import doma.sidim.dto.EnglishLevelDto
-import doma.sidim.dto.TagDto
-import doma.sidim.dto.VacancyCreationDto
-import doma.sidim.model.Vacancy
+import doma.sidim.dto.*
 import doma.sidim.service.VacancyService
 import doma.sidim.util.EducationLevels
 import doma.sidim.util.EnglishLevels
@@ -75,10 +71,10 @@ fun Route.vacancyRoutes(vacancyService: VacancyService) {
             call.respond(HttpStatusCode.OK, vacancyDtos)
         }
 
-        put("/vacancies/{id}") {
+        put("/vacancies/{id}/change-visible") {
             val id = call.extractId()
-            val vacancy = call.receive<Vacancy>()
-            val resultUpdate = vacancyService.updateVacancy(id, vacancy)
+            val dto = call.receive<VisibilityUpdateDto>()
+            val resultUpdate = vacancyService.updateVisibleVacancy(id, dto.isVisible)
             if (resultUpdate) {
                 call.respond(HttpStatusCode.OK)
             } else {
