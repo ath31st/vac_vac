@@ -49,6 +49,10 @@ class VacancyService(
         return vacancyResponseRepository.create(vr)
     }
 
+    fun unresponseToVacancy(vacancyId: Long, employeeId: Long): Boolean {
+        return vacancyResponseRepository.deleteByVacancyAndUserId(vacancyId, employeeId)
+    }
+
     fun checkResponseExists(vacancyId: Long, employeeId: Long): Boolean {
         return vacancyResponseRepository.vacancyResponseExists(vacancyId, employeeId)
     }

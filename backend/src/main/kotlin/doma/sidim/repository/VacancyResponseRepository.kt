@@ -54,4 +54,12 @@ class VacancyResponseRepository : CrudRepository<VacancyResponse> {
             }.any()
         }
     }
+
+    fun deleteByVacancyAndUserId(vacancyId: Long, userId: Long): Boolean {
+        return transaction {
+            VacancyResponses.deleteWhere {
+                VacancyResponses.vacancyId.eq(vacancyId) and VacancyResponses.userId.eq(userId)
+            } > 0
+        }
+    }
 }
