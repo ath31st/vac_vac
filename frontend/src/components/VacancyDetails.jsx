@@ -76,9 +76,9 @@ const VacancyDetails = ({ vacancy }) => {
 
   const handleChangeVisibleVacancy = async (vacancy) => {
     try {
-      vacancy.isVisible = !vacancy.isVisible
-      const endpoint = `/api/v1/vacancies/${vacancy.id}`
-      await axios.put(endpoint, vacancy)
+      const isVisible = !vacancy.isVisible
+      const endpoint = `/api/v1/vacancies/${vacancy.id}/change-visible`
+      await axios.put(endpoint, { isVisible: isVisible })
     } catch (error) {
       if (error.response && error.response.status === 404) {
         setError('Vacancy no found')
@@ -114,7 +114,7 @@ const VacancyDetails = ({ vacancy }) => {
         ) : (
           <SubmitButton type="button" onClick={() =>
             handleChangeVisibleVacancy(vacancy)}>
-            Close vacancy
+            {vacancy.isVisible ? 'Close vacancy' : 'Open vacancy'}
           </SubmitButton>
         )}
       </ButtonContainer>
