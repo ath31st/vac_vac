@@ -1,5 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
+import SubmitButton from './button/SubmitButton'
+import ErrorMessage from './message/ErrorMessage'
+import axios from 'axios'
+import { useSelector } from 'react-redux'
 
 const Container = styled.div`
     padding: 20px;
@@ -34,7 +38,56 @@ const EnglishGradeLvls = styled.p`
     margin: 10px;
 `
 
+const ButtonContainer = styled.div`
+    display: flex;
+    flex-direction: row-reverse;
+`
+
 const VacancyDetails = ({ vacancy }) => {
+  const [error, setError] = useState('')
+  const role = useSelector(state => state.auth.user?.role)
+
+  const handleResponseVacancy = async (vacancyId) => {
+    try {
+      const endpoint = `/api/v1/vacancies/${vacancyId}/response`
+      await axios.post(endpoint)
+    } catch (error) {
+      console.log(error)
+      if (error.response && error.response.status === 409) {
+        setError('Have you already responded to this vacancy')
+      } else {
+        setError(error.response.data)
+      }
+    }
+  }
+
+  const handleCancelResponseVacancy = async (vacancyId) => {
+    try {
+      const endpoint = `/api/v1/vacancies/${vacancyId}/cancel-response`
+      await axios.delete(endpoint)
+    } catch (error) {
+      if (error.response && error.response.status === 404) {
+        setError('No response has been found for this vacancy')
+      } else {
+        setError(error.response.data)
+      }
+    }
+  }
+
+  const handleChangeVisibleVacancy = async (vacancy) => {
+    try {
+      vacancy.isVisible = !vacancy.isVisible
+      const endpoint = `/api/v1/vacancies/${vacancy.id}`
+      await axios.put(endpoint, vacancy)
+    } catch (error) {
+      if (error.response && error.response.status === 404) {
+        setError('Vacancy no found')
+      } else {
+        setError(error.response.data)
+      }
+    }
+  }
+
   return (
     <Container>
       <VacancyTitle>{vacancy.title}</VacancyTitle>
@@ -45,7 +98,26 @@ const VacancyDetails = ({ vacancy }) => {
       <Tags>
         {vacancy.tags.map((tag) => (<Tag key={tag.id}>{tag.name}</Tag>))}
       </Tags>
-      <button>Cancel response</button>
+      {error && <ErrorMessage>{error}</ErrorMessage>}
+      <ButtonContainer>
+        {role === 0 ? (
+          <>
+            <SubmitButton type="button" onClick={() =>
+              handleResponseVacancy(vacancy.id)}>
+              Response to vacancy
+            </SubmitButton>
+            <SubmitButton type="button" onClick={() =>
+              handleCancelResponseVacancy(vacancy.id)}>
+              Cancel response
+            </SubmitButton>
+          </>
+        ) : (
+          <SubmitButton type="button" onClick={() =>
+            handleChangeVisibleVacancy(vacancy)}>
+            Close vacancy
+          </SubmitButton>
+        )}
+      </ButtonContainer>
     </Container>
   )
 }
