@@ -4,12 +4,17 @@ import doma.sidim.dto.TagDto
 import doma.sidim.dto.VacancyCreationDto
 import doma.sidim.dto.VacancyDto
 import doma.sidim.model.Vacancy
+import doma.sidim.model.VacancyResponse
 import doma.sidim.repository.VacancyRepository
+import doma.sidim.repository.VacancyResponseRepository
 import doma.sidim.util.EducationLevels
 import doma.sidim.util.EnglishLevels
 import doma.sidim.util.Tags
 
-class VacancyService(private val vacancyRepository: VacancyRepository) {
+class VacancyService(
+    private val vacancyRepository: VacancyRepository,
+    private val vacancyResponseRepository: VacancyResponseRepository
+) {
     fun createVacancy(dto: VacancyCreationDto, creatorId: Long): Long {
         val vacancy = Vacancy(
             title = dto.title,
@@ -37,6 +42,15 @@ class VacancyService(private val vacancyRepository: VacancyRepository) {
 
     fun getAllVacanciesByCreator(creatorId: Long): List<VacancyDto> {
         return vacancyRepository.getVacanciesByCreator(creatorId).map { it.toDto() }
+    }
+
+    fun responseToVacancy(vacancyId: Long, employeeId: Long): Long {
+        val vr = VacancyResponse(vacancyId = vacancyId, userId = employeeId)
+        return vacancyResponseRepository.create(vr)
+    }
+
+    fun checkResponseExists(vacancyId: Long, employeeId: Long): Boolean {
+        return vacancyResponseRepository.vacancyResponseExists(vacancyId, employeeId)
     }
 
     private fun Vacancy.toDto(): VacancyDto {
