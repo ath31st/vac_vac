@@ -2,12 +2,9 @@ package doma.sidim.repository
 
 import doma.sidim.model.VacancyResponse
 import doma.sidim.model.VacancyResponses
+import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
-import org.jetbrains.exposed.sql.deleteWhere
-import org.jetbrains.exposed.sql.insert
-import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
-import org.jetbrains.exposed.sql.update
 
 class VacancyResponseRepository : CrudRepository<VacancyResponse> {
     override fun create(item: VacancyResponse): Long {
@@ -46,6 +43,15 @@ class VacancyResponseRepository : CrudRepository<VacancyResponse> {
                 it[vacancyId] = item.vacancyId
                 it[userId] = item.userId
             } > 0
+        }
+    }
+
+    fun vacancyResponseExists(vacancyId: Long, userId: Long): Boolean {
+        return transaction {
+            VacancyResponses.select {
+                VacancyResponses.vacancyId eq vacancyId and
+                        VacancyResponses.userId.eq(userId)
+            }.any()
         }
     }
 }
