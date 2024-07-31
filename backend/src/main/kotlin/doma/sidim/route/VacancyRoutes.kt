@@ -19,21 +19,23 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
 fun Route.vacancyRoutes(vacancyService: VacancyService) {
+
     authenticate("auth-jwt") {
+
         post("/vacancies") {
-            val principal = call.authentication.principal<JWTPrincipal>()
-            principal?.let {
-                val authUserId = principal.payload.getClaim("user_id").asLong()
-                val vacancyDto = call.receive<VacancyCreationDto>()
-                val id = vacancyService.createVacancy(vacancyDto, authUserId)
-                call.respond(HttpStatusCode.Created, id)
-            } ?: run {
-                call.respond(HttpStatusCode.Unauthorized, "Unauthorized")
+            val principal = call.principal<JWTPrincipal>()!!
+            if (!principal.hasRole(Roles.EMPLOYEE)) {
+                call.respond(HttpStatusCode.Forbidden)
+                return@post
             }
+            val authUserId = principal.userId()
+            val vacancyDto = call.receive<VacancyCreationDto>()
+            val id = vacancyService.createVacancy(vacancyDto, authUserId)
+            call.respond(HttpStatusCode.Created, id)
         }
 
         get("/vacancies/{id}") {
-            val id = call.parameters["id"]?.toLong() ?: throw IllegalArgumentException("Invalid ID")
+            val id = call.extractId()
             val vacancy = vacancyService.getVacancy(id)
             if (vacancy == null) {
                 call.respond(HttpStatusCode.NotFound)
@@ -52,36 +54,30 @@ fun Route.vacancyRoutes(vacancyService: VacancyService) {
         }
 
         get("/vacancies/employer") {
-            val principal = call.authentication.principal<JWTPrincipal>()
-            principal?.let {
-                if (principal.payload.getClaim("role").asInt() != Roles.EMPLOYER.ordinal) {
-                    call.respond(HttpStatusCode.Forbidden)
-                }
-                val authUserId = principal.payload.getClaim("user_id").asLong()
-                val vacancyDtos = vacancyService.getAllVacanciesByCreator(authUserId)
-                call.respond(HttpStatusCode.OK, vacancyDtos)
-            } ?: run {
-                call.respond(HttpStatusCode.Unauthorized, "Unauthorized")
+            val principal = call.principal<JWTPrincipal>()!!
+            if (!principal.hasRole(Roles.EMPLOYER)) {
+                call.respond(HttpStatusCode.Forbidden)
+                return@get
             }
+            val authUserId = principal.userId()
+            val vacancyDtos = vacancyService.getAllVacanciesByCreator(authUserId)
+            call.respond(HttpStatusCode.OK, vacancyDtos)
         }
 
         get("/vacancies/employee") {
-            val principal = call.authentication.principal<JWTPrincipal>()
-            principal?.let {
-                if (principal.payload.getClaim("role").asInt() != Roles.EMPLOYEE.ordinal) {
-                    call.respond(HttpStatusCode.Forbidden)
-                }
-                val authUserId = principal.payload.getClaim("user_id").asLong()
-                // todo add user responded vacancies
-                val vacancyDtos = vacancyService.getAllVacanciesByCreator(authUserId)
-                call.respond(HttpStatusCode.OK, vacancyDtos)
-            } ?: run {
-                call.respond(HttpStatusCode.Unauthorized, "Unauthorized")
+            val principal = call.principal<JWTPrincipal>()!!
+            if (!principal.hasRole(Roles.EMPLOYEE)) {
+                call.respond(HttpStatusCode.Forbidden)
+                return@get
             }
+            val authUserId = principal.userId()
+            // todo add user responded vacancies
+            val vacancyDtos = vacancyService.getAllVacanciesByCreator(authUserId)
+            call.respond(HttpStatusCode.OK, vacancyDtos)
         }
 
         put("/vacancies/{id}") {
-            val id = call.parameters["id"]?.toLong() ?: throw IllegalArgumentException("Invalid ID")
+            val id = call.extractId()
             val vacancy = call.receive<Vacancy>()
             val resultUpdate = vacancyService.updateVacancy(id, vacancy)
             if (resultUpdate) {
@@ -114,5 +110,58 @@ fun Route.vacancyRoutes(vacancyService: VacancyService) {
                 }
             )
         }
+
+        post("/vacancies/{id}/response") {
+            val id = call.extractId()
+            val principal = call.principal<JWTPrincipal>()!!
+            if (!principal.hasRole(Roles.EMPLOYEE)) {
+                call.respond(HttpStatusCode.Forbidden)
+                return@post
+            }
+            val authUserId = principal.userId()
+            val isExists = vacancyService.checkResponseExists(id, authUserId)
+            if (!isExists) {
+                vacancyService.responseToVacancy(id, authUserId)
+                call.respond(HttpStatusCode.Created)
+            } else {
+                call.respond(HttpStatusCode.Conflict)
+            }
+        }
+
+        delete("/vacancies/{id}/unresponse") {
+            val id = call.extractId()
+            val principal = call.principal<JWTPrincipal>()!!
+            if (!principal.hasRole(Roles.EMPLOYEE)) {
+                call.respond(HttpStatusCode.Forbidden)
+                return@delete
+            }
+            val authUserId = principal.userId()
+            val isExists = vacancyService.checkResponseExists(id, authUserId)
+            if (isExists) {
+                val isDelete = vacancyService.unresponseToVacancy(id, authUserId)
+                if (isDelete) {
+                    call.respond(HttpStatusCode.NoContent)
+                } else {
+                    call.respond(
+                        HttpStatusCode.InternalServerError,
+                        "Failed to delete response"
+                    )
+                }
+            } else {
+                call.respond(HttpStatusCode.NotFound)
+            }
+        }
     }
+}
+
+private fun JWTPrincipal.userId(): Long {
+    return this.payload.getClaim("user_id").asLong()
+}
+
+private fun JWTPrincipal.hasRole(role: Roles): Boolean {
+    return this.payload.getClaim("role").asInt() == role.ordinal
+}
+
+private fun ApplicationCall.extractId(): Long {
+    return this.parameters["id"]?.toLong() ?: throw IllegalArgumentException("Invalid ID")
 }
