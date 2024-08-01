@@ -28,8 +28,8 @@ class VacancyService(
         return vacancyRepository.create(vacancy)
     }
 
-    fun getVacancy(id: Long): Vacancy? {
-        return vacancyRepository.read(id)
+    fun getVacancy(id: Long): VacancyDto? {
+        return vacancyRepository.read(id)?.toDto()
     }
 
     fun updateVacancy(id: Long, vacancy: Vacancy): Boolean {
