@@ -29,8 +29,7 @@ const VacanciesList = ({ endpoint }) => {
             fetchResponseStatuses(response.data.map(vacancy => vacancy.id))
           } else if (role === 1) {
             fetchResponseCounts(
-              response.data
-              .filter(v => v.creatorId === userId)
+              response.data.filter(vacancy => vacancy.creatorId === userId)
               .map(vacancy => vacancy.id))
           }
         }, 200)
@@ -68,7 +67,7 @@ const VacanciesList = ({ endpoint }) => {
       setVacancies((prevVacancies) =>
         prevVacancies.map((vacancy) => ({
           ...vacancy,
-          responseCount: counts[vacancy.id] || null,
+          responseCount: counts[vacancy.id] || 0,
         })),
       )
     } catch (error) {
@@ -107,7 +106,9 @@ const VacanciesList = ({ endpoint }) => {
             title={vacancy.title}
             description={vacancy.description}
             hasResponded={role === 0 ? vacancy.hasResponded : null}
-            responseCount={role === 1 ? vacancy.responseCount : null}
+            responseCount={role === 1 && vacancy.creatorId === userId
+              ? vacancy.responseCount
+              : null}
             onClick={() => handleVacancyClick(vacancy.id)}
           />
         ))}

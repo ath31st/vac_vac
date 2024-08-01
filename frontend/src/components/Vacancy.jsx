@@ -48,7 +48,7 @@ const Vacancy = ({
           {hasResponded ? '✔ You responded' : '❌ Not responded'}
         </ResponseStatus>
       )}
-      {responseCount && (
+      {responseCount !== null && (
         <ResponseCount>
           {responseCount} responses
         </ResponseCount>
