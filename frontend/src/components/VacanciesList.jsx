@@ -28,12 +28,26 @@ const VacanciesList = ({ endpoint }) => {
     fetchVacancies()
   }, [endpoint])
 
-  const handleVacancyClick = (vacancy) => {
-    if (selectedVacancy === vacancy) {
+  const fetchVacancyDetails = async (vacancyId) => {
+    try {
+      const response = await axios.get(`/api/v1/vacancies/${vacancyId}`)
+      setSelectedVacancy(response.data)
+    } catch (error) {
+      console.error('Error fetching Vacancy Details:', error)
+    }
+  }
+
+  const handleVacancyClick = (vacancyId) => {
+    if (selectedVacancy && selectedVacancy.id === vacancyId) {
       setSelectedVacancy(null)
     } else {
-      setSelectedVacancy(vacancy)
+      fetchVacancyDetails(vacancyId)
     }
+  }
+
+  const removeVacancy = (vacancyId) => {
+    setVacancies(vacancies.filter(vacancy => vacancy.id !== vacancyId))
+    setSelectedVacancy(null)
   }
 
   return (
@@ -44,12 +58,13 @@ const VacanciesList = ({ endpoint }) => {
             key={vacancy.id}
             title={vacancy.title}
             description={vacancy.description}
-            tags={vacancy.tags}
-            onClick={() => handleVacancyClick(vacancy)}
+            onClick={() => handleVacancyClick(vacancy.id)}
           />
         ))}
       </VacanciesContainer>
-      {selectedVacancy && <VacancyDetails vacancy={selectedVacancy}/>}
+      {selectedVacancy && <VacancyDetails
+        vacancy={selectedVacancy}
+        onRemoveVacancy={removeVacancy}/>}
     </>
   )
 }
