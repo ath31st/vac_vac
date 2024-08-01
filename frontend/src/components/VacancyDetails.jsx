@@ -43,7 +43,7 @@ const ButtonContainer = styled.div`
     flex-direction: row-reverse;
 `
 
-const VacancyDetails = ({ vacancy, onRemoveVacancy, onVacancyChange }) => {
+const VacancyDetails = ({ vacancy, onVacancyChange }) => {
   const [error, setError] = useState('')
   const role = useSelector(state => state.auth.user?.role)
   const userId = useSelector(state => state.auth.user?.user_id)
@@ -52,10 +52,11 @@ const VacancyDetails = ({ vacancy, onRemoveVacancy, onVacancyChange }) => {
     try {
       const endpoint = `/api/v1/vacancies/${vacancyId}/response`
       await axios.post(endpoint)
+      onVacancyChange({ ...vacancy, hasResponded: true })
     } catch (error) {
       console.log(error)
       if (error.response && error.response.status === 409) {
-        setError('Have you already responded to this vacancy')
+        setError('You have already responded to this vacancy')
       } else {
         setError(error.response.data)
       }
@@ -66,7 +67,7 @@ const VacancyDetails = ({ vacancy, onRemoveVacancy, onVacancyChange }) => {
     try {
       const endpoint = `/api/v1/vacancies/${vacancyId}/cancel-response`
       await axios.delete(endpoint)
-      onRemoveVacancy(vacancyId)
+      onVacancyChange({ ...vacancy, hasResponded: false })
     } catch (error) {
       if (error.response && error.response.status === 404) {
         setError('No response has been found for this vacancy')
@@ -84,7 +85,7 @@ const VacancyDetails = ({ vacancy, onRemoveVacancy, onVacancyChange }) => {
       onVacancyChange({ ...vacancy, isVisible: isVisible })
     } catch (error) {
       if (error.response && error.response.status === 404) {
-        setError('Vacancy no found')
+        setError('Vacancy not found')
       } else {
         setError(error.response.data)
       }
@@ -112,14 +113,17 @@ const VacancyDetails = ({ vacancy, onRemoveVacancy, onVacancyChange }) => {
           </SubmitButton>
         ) : role !== 1 ? (
           <>
-            <SubmitButton type="button" onClick={() =>
-              handleResponseVacancy(vacancy.id)}>
-              Response to vacancy
-            </SubmitButton>
-            <SubmitButton type="button" onClick={() =>
-              handleCancelResponseVacancy(vacancy.id)}>
-              Cancel response
-            </SubmitButton>
+            {vacancy.hasResponded ? (
+              <SubmitButton type="button" onClick={() =>
+                handleCancelResponseVacancy(vacancy.id)}>
+                Cancel response
+              </SubmitButton>
+            ) : (
+              <SubmitButton type="button" onClick={() =>
+                handleResponseVacancy(vacancy.id)}>
+                Response to vacancy
+              </SubmitButton>
+            )}
           </>
         ) : null}
       </ButtonContainer>

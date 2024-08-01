@@ -78,7 +78,20 @@ const VacanciesList = ({ endpoint }) => {
   const fetchVacancyDetails = async (vacancyId) => {
     try {
       const response = await axios.get(`/api/v1/vacancies/${vacancyId}`)
-      setSelectedVacancy(response.data)
+      const vacancyDetails = response.data
+
+      if (role === 0) {
+        const statusResponse
+          = await axios.post('/api/v1/vacancies/response-statuses', [vacancyId])
+        const hasResponded = statusResponse.data[vacancyId] || false
+
+        setSelectedVacancy({
+          ...vacancyDetails,
+          hasResponded,
+        })
+      } else {
+        setSelectedVacancy(vacancyDetails)
+      }
     } catch (error) {
       console.error('Error fetching Vacancy Details:', error)
     }
