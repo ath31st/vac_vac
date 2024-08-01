@@ -18,11 +18,6 @@ const FormContainer = styled.div`
     width: 600px;
 `
 
-const Title = styled.h1`
-    font-size: 24px;
-    margin-bottom: 20px;
-`
-
 const FieldContainer = styled.div`
     display: flex;
     flex-direction: column;
@@ -109,7 +104,6 @@ const CreateVacancy = () => {
     <Container>
       <Sidebar/>
       <FormContainer>
-        <Title>Create Vacancy</Title>
         <FieldContainer>
           <Label htmlFor="title">Vacancy Title</Label>
           <InputField
