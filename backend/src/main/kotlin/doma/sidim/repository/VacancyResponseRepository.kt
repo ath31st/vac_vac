@@ -71,4 +71,13 @@ class VacancyResponseRepository : CrudRepository<VacancyResponse> {
             }.associate { it[VacancyResponses.vacancyId] to true }
         }
     }
+
+    fun getResponseCounts(vacancyIds: List<Long>): Map<Long, Long> {
+        return transaction {
+            VacancyResponses.slice(VacancyResponses.vacancyId, VacancyResponses.vacancyId.count())
+                .select { VacancyResponses.vacancyId inList vacancyIds }
+                .groupBy(VacancyResponses.vacancyId)
+                .associate { it[VacancyResponses.vacancyId] to it[VacancyResponses.vacancyId.count()] }
+        }
+    }
 }

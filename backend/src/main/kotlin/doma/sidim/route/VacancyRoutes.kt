@@ -166,11 +166,9 @@ fun Route.vacancyRoutes(vacancyService: VacancyService) {
                 call.respond(HttpStatusCode.Forbidden)
                 return@post
             }
-            val vacancyIds = call.receive<List<Int>>()
-            val authUserId = principal.userId()
-
-            val responseStatuses = vacancyIds.associateWith { 2 }
-            call.respond(HttpStatusCode.OK, responseStatuses)
+            val vacancyIds = call.receive<List<Long>>()
+            val responseCounts = vacancyService.getResponseCounts(vacancyIds)
+            call.respond(HttpStatusCode.OK, responseCounts)
         }
     }
 }
