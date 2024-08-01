@@ -26,14 +26,33 @@ const ResponseStatus = styled.span`
     color: green;
 `
 
-const Vacancy = ({ title, description, onClick }) => {
+const ResponseCount = styled.span`
+    color: blue;
+`
+
+const Vacancy = ({
+  title,
+  description,
+  hasResponded,
+  responseCount,
+  onClick,
+}) => {
   return (
     <Container onClick={onClick}>
       <div>
         <VacancyTitle>{title}</VacancyTitle>
         <VacancyDescription>{description}</VacancyDescription>
       </div>
-      <ResponseStatus>✔ You responded</ResponseStatus>
+      {hasResponded && (
+        <ResponseStatus>
+          {hasResponded ? '✔ You responded' : '❌ Not responded'}
+        </ResponseStatus>
+      )}
+      {responseCount && (
+        <ResponseCount>
+          {responseCount} responses
+        </ResponseCount>
+      )}
     </Container>
   )
 }
