@@ -65,6 +65,10 @@ class VacancyService(
         return vacancyResponseRepository.vacancyResponseExists(vacancyId, employeeId)
     }
 
+    fun getResponseStatuses(vacancyIds: List<Long>, employeeId: Long): Map<Long, Boolean> {
+        return vacancyResponseRepository.getResponseStatuses(vacancyIds, employeeId)
+    }
+
     private fun Vacancy.toDto(): VacancyDto {
         return VacancyDto(
             id = this.id,

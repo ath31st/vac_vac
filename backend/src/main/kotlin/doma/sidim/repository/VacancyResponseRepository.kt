@@ -62,4 +62,13 @@ class VacancyResponseRepository : CrudRepository<VacancyResponse> {
             } > 0
         }
     }
+
+    fun getResponseStatuses(vacancyIds: List<Long>, userId: Long): Map<Long, Boolean> {
+        return transaction {
+            VacancyResponses.select {
+                (VacancyResponses.vacancyId inList vacancyIds) and
+                        (VacancyResponses.userId eq userId)
+            }.associate { it[VacancyResponses.vacancyId] to true }
+        }
+    }
 }
