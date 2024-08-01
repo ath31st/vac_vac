@@ -146,6 +146,32 @@ fun Route.vacancyRoutes(vacancyService: VacancyService) {
                 call.respond(HttpStatusCode.NotFound)
             }
         }
+
+        post("/vacancies/response-statuses") {
+            val principal = call.principal<JWTPrincipal>()!!
+            if (!principal.hasRole(Roles.EMPLOYEE)) {
+                call.respond(HttpStatusCode.Forbidden)
+                return@post
+            }
+            val vacancyIds = call.receive<List<Int>>()
+            val authUserId = principal.userId()
+
+            val responseStatuses = vacancyIds.associateWith { true }
+            call.respond(HttpStatusCode.OK, responseStatuses)
+        }
+
+        post("/vacancies/response-counts") {
+            val principal = call.principal<JWTPrincipal>()!!
+            if (!principal.hasRole(Roles.EMPLOYER)) {
+                call.respond(HttpStatusCode.Forbidden)
+                return@post
+            }
+            val vacancyIds = call.receive<List<Int>>()
+            val authUserId = principal.userId()
+
+            val responseStatuses = vacancyIds.associateWith { 2 }
+            call.respond(HttpStatusCode.OK, responseStatuses)
+        }
     }
 }
 
