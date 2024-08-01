@@ -97,6 +97,14 @@ const VacanciesList = ({ endpoint }) => {
     setSelectedVacancy(null)
   }
 
+  const handleVacancyChange = (updatedVacancy) => {
+    setVacancies(prevVacancies =>
+      prevVacancies.map(vacancy =>
+        vacancy.id === updatedVacancy.id ? updatedVacancy : vacancy,
+      ),
+    )
+  }
+
   return (
     <>
       <VacanciesContainer>
@@ -116,7 +124,9 @@ const VacanciesList = ({ endpoint }) => {
       </VacanciesContainer>
       {selectedVacancy && <VacancyDetails
         vacancy={selectedVacancy}
-        onRemoveVacancy={removeVacancy}/>}
+        onRemoveVacancy={removeVacancy}
+        onVacancyChange={handleVacancyChange}
+      />}
     </>
   )
 }

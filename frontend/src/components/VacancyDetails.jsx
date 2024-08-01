@@ -43,7 +43,7 @@ const ButtonContainer = styled.div`
     flex-direction: row-reverse;
 `
 
-const VacancyDetails = ({ vacancy, onRemoveVacancy }) => {
+const VacancyDetails = ({ vacancy, onRemoveVacancy, onVacancyChange }) => {
   const [error, setError] = useState('')
   const role = useSelector(state => state.auth.user?.role)
   const userId = useSelector(state => state.auth.user?.user_id)
@@ -81,6 +81,7 @@ const VacancyDetails = ({ vacancy, onRemoveVacancy }) => {
       const isVisible = !vacancy.isVisible
       const endpoint = `/api/v1/vacancies/${vacancy.id}/change-visible`
       await axios.put(endpoint, { isVisible: isVisible })
+      onVacancyChange({ ...vacancy, isVisible: isVisible })
     } catch (error) {
       if (error.response && error.response.status === 404) {
         setError('Vacancy no found')
