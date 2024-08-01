@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 const Container = styled.div`
+    width: 600px;
     border: 1px solid #ccc;
     padding: 20px;
     display: flex;
@@ -24,10 +25,14 @@ const VacancyDescription = styled.p`
 
 const ResponseStatus = styled.span`
     color: green;
+    width: 100px;
+    text-align: right;
 `
 
 const ResponseCount = styled.span`
     color: blue;
+    width: 100px;
+    text-align: right;
 `
 
 const Vacancy = ({
