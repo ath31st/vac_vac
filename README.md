@@ -11,24 +11,36 @@ job seekers and employers.
 
 - **Vacancies Page**: Accessible by both job seekers and employers, displaying a list of available
   job postings.
+
+  Employer side:
+  ![Vacancies](images/employer_vacancies.jpg)
+
+  Job seeker side:
+  ![Vacancies](images/employee_vacancies_1.jpg)
 - **Vacancy Details Page**: Accessible by both job seekers and employers, displaying detailed
   information about a specific job posting.
+  ![Vacancies](images/employee_vacancies_2.jpg)
 
 ### Job Seeker Pages
 
 - **My Vacancies Page**: Lists the job postings the user has applied to.
+  ![My Vacancies](images/employee_my_vacancies.jpg)
 
 ### Employer Pages
 
 - **Active Vacancies Page**: Lists the active job postings created by the employer.
+  ![Active Vacancies](images/employer_active_vacancies.jpg)
 - **Active Vacancy Details Page**: Displays detailed information about a specific active job posting
   created by the employer, with options to close the vacancy.
 - **Create Vacancy Page**: Allows employers to create new job postings.
+  ![Create Vacancy](images/employer_create_vacancy.jpg)
 
 ### Authentication Pages
 
 - **Login Page**: For user authentication.
+  ![Sign In](images/signin.jpg)
 - **Common Registration Page**: For job seekers and companies to register.
+  ![Sign Up](images/signup.jpg)
 
 ## User Permissions
 
