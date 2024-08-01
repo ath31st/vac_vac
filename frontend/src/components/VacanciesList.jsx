@@ -105,6 +105,7 @@ const VacanciesList = ({ endpoint }) => {
             key={vacancy.id}
             title={vacancy.title}
             description={vacancy.description}
+            isVisible={vacancy.isVisible}
             hasResponded={role === 0 ? vacancy.hasResponded : null}
             responseCount={role === 1 && vacancy.creatorId === userId
               ? vacancy.responseCount

@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 const Container = styled.div`
+    position: relative;
     width: 600px;
     border: 1px solid #ccc;
     padding: 20px;
@@ -35,15 +36,33 @@ const ResponseCount = styled.span`
     text-align: right;
 `
 
+const ClosedOverlay = styled.div`
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 0, 0, 0.5);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    font-weight: bold;
+    pointer-events: none;
+`
+
 const Vacancy = ({
   title,
   description,
   hasResponded,
   responseCount,
+  isVisible,
   onClick,
 }) => {
   return (
     <Container onClick={onClick}>
+      {!isVisible && <ClosedOverlay>Closed</ClosedOverlay>}
       <div>
         <VacancyTitle>{title}</VacancyTitle>
         <VacancyDescription>{description}</VacancyDescription>
