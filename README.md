@@ -28,40 +28,56 @@ job seekers and employers.
 ### Authentication Pages
 
 - **Login Page**: For user authentication.
-- **Job Seeker Registration Page**: For job seekers to register.
-- **Employer Registration Page**: For companies to register.
+- **Common Registration Page**: For job seekers and companies to register.
 
 ## User Permissions
 
 - **Employers**: Can view the number of applicants for their job postings, close vacancies, and
-  create new job postings. They cannot access the job seeker-specific pages.
+  create new job postings.
+  They cannot access job seeker-specific pages.
 - **Job Seekers**: Can view and apply to job postings, see which jobs they have applied to, and
   cancel applications. They cannot access employer-specific pages and will be redirected to the
   Vacancies Page if attempting to access restricted pages.
 
 ## Backend Endpoints
 
-- **POST /login**: User login.
-- **POST /signup**: User registration.
-- **GET /vacancies**: Retrieve a list of all vacancies.
-- **GET /vacancies/:id**: Retrieve details of a specific vacancy.
+### User Routes
+
+- **POST /users**: Register a new user.
+- **POST /auth**: Authenticate a user.
+- **GET /roles**: Retrieve a list of roles.
+- **GET /users/{id}**: Get user details by ID.
+- **PUT /users/{id}**: Update user details by ID.
+- **DELETE /users/{id}**: Delete a user by ID.
+
+### Vacancy Routes
+
 - **POST /vacancies**: Create a new vacancy.
-- **PUT /vacancies**: Update an existing vacancy.
-- **DELETE /vacancies**: Delete a vacancy.
-- **GET /my-vacancies**: Retrieve a list of vacancies the user has applied to.
+- **GET /vacancies/{id}**: Retrieve details of a specific vacancy.
+- **GET /vacancies**: Retrieve a list of all active vacancies.
+- **GET /vacancies/employer**: Retrieve all vacancies created by the current employer.
+- **GET /vacancies/employee**: Retrieve vacancies to which the current job seeker has applied.
+- **PUT /vacancies/{id}/change-visible**: Update the visibility of a vacancy.
+- **GET /vacancies/tags**: Retrieve a list of vacancy tags.
+- **GET /vacancies/education-levels**: Retrieve a list of education levels.
+- **GET /vacancies/english-levels**: Retrieve a list of English language levels.
+- **POST /vacancies/{id}/response**: Apply to a vacancy.
+- **DELETE /vacancies/{id}/cancel-response**: Cancel an application to a vacancy.
+- **POST /vacancies/response-statuses**: Retrieve response statuses for vacancies.
+- **POST /vacancies/response-counts**: Retrieve the number of responses for vacancies.
 
 ## Technology Stack
 
 - **Frontend**: React with Redux for state management.
-- **Backend**: Node.js (or any other preferred technology stack, as specified in the instructions).
+- **Backend**: Ktor with Kotlin.
 
 ## Setup Instructions
 
 ### Backend
 
 1. Navigate to the backend directory.
-2. Install dependencies: `npm install`.
-3. Start the backend server: `node {file_path}`.
+2. Build the project and install dependencies: `./gradlew build`.
+3. Start the backend server: `./gradlew run`.
 
 ### Frontend
 
@@ -69,14 +85,10 @@ job seekers and employers.
 2. Install dependencies: `yarn install`.
 3. Start the frontend application: `yarn start`.
 
-*Note: If port 3000 is occupied by the backend server, the frontend application will automatically
-prompt to use a different port.*
-
 ## Repository Structure
 
 - **backend/**: Contains backend server code.
 - **frontend/**: Contains React application code.
-- **instructions.md**: Detailed setup and deployment instructions.
 
 Vac Vac is designed to streamline the job application process, providing a user-friendly interface
 for both job seekers and employers to interact seamlessly.
