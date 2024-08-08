@@ -80,8 +80,8 @@ job seekers and employers.
 
 ## Technology Stack
 
-- **Frontend**: React with Redux for state management.
-- **Backend**: Ktor with Kotlin.
+- **Frontend**: JS (React, Redux, Styled-components).
+- **Backend**: Kotlin (Ktor, exposed, sqlite).
 
 ## Setup Instructions
 
