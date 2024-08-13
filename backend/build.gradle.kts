@@ -2,6 +2,9 @@ val kotlin_version: String by project
 val logback_version: String by project
 val exposed_version: String by project
 val sqlite_version: String by project
+val auth0_version: String by project
+val bcrypt_version: String by project
+val dotenv_version: String by project
 
 plugins {
     kotlin("jvm") version "2.0.0"
@@ -41,9 +44,9 @@ dependencies {
     implementation("org.xerial:sqlite-jdbc:$sqlite_version")
     implementation("io.ktor:ktor-server-netty-jvm")
     implementation("ch.qos.logback:logback-classic:$logback_version")
-    implementation("com.auth0:java-jwt:4.4.0")
-    implementation("at.favre.lib:bcrypt:0.10.2")
-    implementation("io.github.cdimascio:dotenv-kotlin:6.4.1")
+    implementation("com.auth0:java-jwt:$auth0_version")
+    implementation("at.favre.lib:bcrypt:$bcrypt_version")
+    implementation("io.github.cdimascio:dotenv-kotlin:$dotenv_version")
     testImplementation("io.ktor:ktor-server-tests-jvm")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
 }
