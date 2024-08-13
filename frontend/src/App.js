@@ -21,9 +21,7 @@ function App () {
           <Route path="/vacancies"
                  element={<PrivateRoute element={<Vacancies/>}/>}/>
           <Route path="/my-vacancies" element={<MyVacancies/>}/>
-          {/*<Route path="/my-vacancies/:id" element={<MyVacancy/>}/>*/}
           <Route path="/active-vacancies" element={<ActiveVacancies/>}/>
-          {/*<Route path="/active-vacancies/:id" element={<ActiveVacancy/>}/>*/}
           <Route path="/create-vacancy" element={<CreateVacancy/>}/>
           <Route path="*" element={<NotFoundPage/>}/>
         </Route>
