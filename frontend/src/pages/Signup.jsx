@@ -5,7 +5,7 @@ import SubmitButton from '../components/button/SubmitButton'
 import ErrorMessage from '../components/message/ErrorMessage'
 import SelectField from '../components/select/SelectField'
 import { useNavigate } from 'react-router-dom'
-import SignInUpForm from '../components/form/SIgnInUpForm'
+import SignInUpForm from '../components/form/SignInUpForm'
 import SignInUpContainer from '../components/container/SignInUpContainer'
 
 const Signup = () => {
@@ -21,13 +21,12 @@ const Signup = () => {
 
   const [roles, setRoles] = useState([])
   const [error, setError] = useState('')
-  const apiUrl = process.env.REACT_APP_API_BASE_URL
   const navigate = useNavigate()
 
   useEffect(() => {
     const fetchRoles = async () => {
       try {
-        const response = await axios.get(`${apiUrl}/api/v1/roles`)
+        const response = await axios.get(`/api/v1/roles`)
         setRoles(response.data)
       } catch (error) {
         console.error('Error fetching roles:', error)
@@ -35,7 +34,7 @@ const Signup = () => {
     }
 
     fetchRoles()
-  }, [apiUrl])
+  })
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -60,7 +59,7 @@ const Signup = () => {
     } else {
       setError('')
       try {
-        await axios.post(`${apiUrl}/api/v1/users`, formData)
+        await axios.post(`/api/v1/users`, formData)
         navigate('/login')
       } catch (error) {
         console.error('Error during registration:', error)

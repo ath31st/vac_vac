@@ -5,7 +5,7 @@ import SubmitButton from '../components/button/SubmitButton'
 import ErrorMessage from '../components/message/ErrorMessage'
 import { Link, useNavigate } from 'react-router-dom'
 import { login } from '../redux/authSlice'
-import SignInUpForm from '../components/form/SIgnInUpForm'
+import SignInUpForm from '../components/form/SignInUpForm'
 import SignInUpContainer from '../components/container/SignInUpContainer'
 import LabelWithLink from '../components/label/LabelWithLink'
 
