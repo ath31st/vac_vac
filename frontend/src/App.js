@@ -20,9 +20,12 @@ function App () {
           <Route path="/login" element={<Login/>}/>
           <Route path="/vacancies"
                  element={<PrivateRoute element={<Vacancies/>}/>}/>
-          <Route path="/my-vacancies" element={<MyVacancies/>}/>
-          <Route path="/active-vacancies" element={<ActiveVacancies/>}/>
-          <Route path="/create-vacancy" element={<CreateVacancy/>}/>
+          <Route path="/my-vacancies"
+                 element={<PrivateRoute element={<MyVacancies/>}/>}/>
+          <Route path="/active-vacancies"
+                 element={<PrivateRoute element={<ActiveVacancies/>}/>}/>
+          <Route path="/create-vacancy"
+                 element={<PrivateRoute element={<CreateVacancy/>}/>}/>
           <Route path="*" element={<NotFoundPage/>}/>
         </Route>
       </Routes>
