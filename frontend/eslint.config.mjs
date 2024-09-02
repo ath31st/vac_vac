@@ -1,7 +1,7 @@
-import globals from "globals";
-import pluginJs from "@eslint/js";
-import tseslint from "typescript-eslint";
-import pluginReact from "eslint-plugin-react";
+import globals from 'globals';
+import pluginJs from '@eslint/js';
+import tseslint from 'typescript-eslint';
+import pluginReact from 'eslint-plugin-react';
 
 
 export default [
@@ -10,7 +10,7 @@ export default [
     rules: {
       'semi': ['error', 'always'],
       'quotes': ['error', 'single'],
-      'react/prop-types': 'off', 
+      'react/prop-types': 'off',
     },
   },
   { languageOptions: { globals: globals.browser } },
