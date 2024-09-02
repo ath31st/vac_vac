@@ -1,11 +1,11 @@
-import { MultiSelect } from 'react-multi-select-component'
-import React from 'react'
+import { MultiSelect } from 'react-multi-select-component';
+import React from 'react';
 
 const MultiSelectField = ({ name, value, onChange, options, placeholder }) => {
   const handleChange = (selectedOptions) => {
-    const selectedIds = selectedOptions.map(option => option.value)
-    onChange({ target: { name, value: selectedIds } })
-  }
+    const selectedIds = selectedOptions.map(option => option.value);
+    onChange({ target: { name, value: selectedIds } });
+  };
 
   return (
     <div>
@@ -17,7 +17,7 @@ const MultiSelectField = ({ name, value, onChange, options, placeholder }) => {
         labelledBy={placeholder || 'Select'}
       />
     </div>
-  )
-}
+  );
+};
 
-export default MultiSelectField
+export default MultiSelectField;

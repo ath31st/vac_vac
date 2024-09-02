@@ -1,16 +1,16 @@
-import styled from 'styled-components'
-import StyledLink from '../link/StyledLink'
+import styled from 'styled-components';
+import StyledLink from '../link/StyledLink';
 
 const StyledButtonLink = styled(StyledLink).attrs({
   as: 'div',
 })`
-    cursor: pointer;
-    text-align: center;
+  cursor: pointer;
+  text-align: center;
 
-    &:hover {
-        background-color: silver;
-        color: white;
-    }
-`
+  &:hover {
+    background-color: silver;
+    color: white;
+  }
+`;
 
-export default StyledButtonLink
+export default StyledButtonLink;

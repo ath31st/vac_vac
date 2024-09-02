@@ -1,98 +1,98 @@
-import React, { useState } from 'react'
-import styled from 'styled-components'
-import SubmitButton from './button/SubmitButton'
-import ErrorMessage from './message/ErrorMessage'
-import axios from 'axios'
-import { useSelector } from 'react-redux'
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import SubmitButton from './button/SubmitButton';
+import ErrorMessage from './message/ErrorMessage';
+import axios from 'axios';
+import { useSelector } from 'react-redux';
 
 const Container = styled.div`
-    padding: 20px;
-    border-left: 1px solid #ccc;
-    width: 50%;
-`
+  padding: 20px;
+  border-left: 1px solid #ccc;
+  width: 50%;
+`;
 
 const VacancyTitle = styled.h2`
-    margin: 0 0 20px;
-`
+  margin: 0 0 20px;
+`;
 
 const VacancyDescription = styled.p`
-    background-color: #e0e0e0;
-    padding: 20px;
-    margin: 0 0 20px;
-`
+  background-color: #e0e0e0;
+  padding: 20px;
+  margin: 0 0 20px;
+`;
 
 const Tags = styled.div`
-    margin: 20px 0;
-`
+  margin: 20px 0;
+`;
 
 const Tag = styled.span`
-    display: inline-block;
-    margin: 0 10px 10px 0;
-    padding: 5px 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-`
+  display: inline-block;
+  margin: 0 10px 10px 0;
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+`;
 
 const EnglishGradeLvls = styled.p`
-    padding-left: 20px;
-    margin: 10px;
-`
+  padding-left: 20px;
+  margin: 10px;
+`;
 
 const ButtonContainer = styled.div`
-    display: flex;
-    flex-direction: row-reverse;
-`
+  display: flex;
+  flex-direction: row-reverse;
+`;
 
 const VacancyDetails = ({ vacancy, onVacancyChange }) => {
-  const [error, setError] = useState('')
-  const role = useSelector(state => state.auth.user?.role)
-  const userId = useSelector(state => state.auth.user?.user_id)
+  const [error, setError] = useState('');
+  const role = useSelector((state) => state.auth.user?.role);
+  const userId = useSelector((state) => state.auth.user?.user_id);
 
   const handleResponseVacancy = async (vacancyId) => {
     try {
-      const endpoint = `/api/v1/vacancies/${vacancyId}/response`
-      await axios.post(endpoint)
-      onVacancyChange({ ...vacancy, hasResponded: true })
+      const endpoint = `/api/v1/vacancies/${vacancyId}/response`;
+      await axios.post(endpoint);
+      onVacancyChange({ ...vacancy, hasResponded: true });
     } catch (error) {
-      console.log(error)
+      console.log(error);
       if (error.response && error.response.status === 409) {
-        setError('You have already responded to this vacancy')
+        setError('You have already responded to this vacancy');
       } else {
-        setError(error.response.data)
+        setError(error.response.data);
       }
     }
-  }
+  };
 
   const handleCancelResponseVacancy = async (vacancyId) => {
     try {
-      const endpoint = `/api/v1/vacancies/${vacancyId}/cancel-response`
-      await axios.delete(endpoint)
-      onVacancyChange({ ...vacancy, hasResponded: false })
+      const endpoint = `/api/v1/vacancies/${vacancyId}/cancel-response`;
+      await axios.delete(endpoint);
+      onVacancyChange({ ...vacancy, hasResponded: false });
     } catch (error) {
       if (error.response && error.response.status === 404) {
-        setError('No response has been found for this vacancy')
+        setError('No response has been found for this vacancy');
       } else {
-        setError(error.response.data)
+        setError(error.response.data);
       }
     }
-  }
+  };
 
   const handleChangeVisibleVacancy = async (vacancy) => {
     try {
-      const isVisible = !vacancy.isVisible
-      const endpoint = `/api/v1/vacancies/${vacancy.id}/change-visible`
-      await axios.put(endpoint, { isVisible: isVisible })
-      onVacancyChange({ ...vacancy, isVisible: isVisible })
+      const isVisible = !vacancy.isVisible;
+      const endpoint = `/api/v1/vacancies/${vacancy.id}/change-visible`;
+      await axios.put(endpoint, { isVisible: isVisible });
+      onVacancyChange({ ...vacancy, isVisible: isVisible });
     } catch (error) {
       if (error.response && error.response.status === 404) {
-        setError('Vacancy not found')
+        setError('Vacancy not found');
       } else {
-        setError(error.response.data)
+        setError(error.response.data);
       }
     }
-  }
+  };
 
-  const isUserCreator = vacancy.creatorId === userId
+  const isUserCreator = vacancy.creatorId === userId;
 
   return (
     <Container>
@@ -102,25 +102,33 @@ const VacancyDetails = ({ vacancy, onVacancyChange }) => {
       <VacancyDescription>{vacancy.description}</VacancyDescription>
       <h3>Contacts</h3>
       <Tags>
-        {vacancy.tags.map((tag) => (<Tag key={tag.id}>{tag.name}</Tag>))}
+        {vacancy.tags.map((tag) => (
+          <Tag key={tag.id}>{tag.name}</Tag>
+        ))}
       </Tags>
       {error && <ErrorMessage>{error}</ErrorMessage>}
       <ButtonContainer>
         {role === 1 && isUserCreator ? (
-          <SubmitButton type="button" onClick={() =>
-            handleChangeVisibleVacancy(vacancy)}>
+          <SubmitButton
+            type="button"
+            onClick={() => handleChangeVisibleVacancy(vacancy)}
+          >
             {vacancy.isVisible ? 'Close vacancy' : 'Open vacancy'}
           </SubmitButton>
         ) : role !== 1 ? (
           <>
             {vacancy.hasResponded ? (
-              <SubmitButton type="button" onClick={() =>
-                handleCancelResponseVacancy(vacancy.id)}>
+              <SubmitButton
+                type="button"
+                onClick={() => handleCancelResponseVacancy(vacancy.id)}
+              >
                 Cancel response
               </SubmitButton>
             ) : (
-              <SubmitButton type="button" onClick={() =>
-                handleResponseVacancy(vacancy.id)}>
+              <SubmitButton
+                type="button"
+                onClick={() => handleResponseVacancy(vacancy.id)}
+              >
                 Response to vacancy
               </SubmitButton>
             )}
@@ -128,7 +136,7 @@ const VacancyDetails = ({ vacancy, onVacancyChange }) => {
         ) : null}
       </ButtonContainer>
     </Container>
-  )
-}
+  );
+};
 
-export default VacancyDetails
+export default VacancyDetails;

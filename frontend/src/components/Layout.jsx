@@ -1,26 +1,26 @@
-import React from 'react'
-import { Outlet } from 'react-router-dom'
-import Header from '../components/Header'
-import Footer from '../components/Footer'
-import styled from 'styled-components'
+import React from 'react';
+import { Outlet } from 'react-router-dom';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
+import styled from 'styled-components';
 
 const Container = styled.main`
-    padding: 20px;
-    min-height: calc(100vh - 100px);
-    display: flex;
-    flex-direction: column;
-`
+  padding: 20px;
+  min-height: calc(100vh - 100px);
+  display: flex;
+  flex-direction: column;
+`;
 
 const Layout = () => {
   return (
     <>
-      <Header/>
+      <Header />
       <Container>
-        <Outlet/>
+        <Outlet />
       </Container>
-      <Footer/>
+      <Footer />
     </>
-  )
-}
+  );
+};
 
-export default Layout
+export default Layout;

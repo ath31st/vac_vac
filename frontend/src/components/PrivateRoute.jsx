@@ -1,11 +1,11 @@
-import React from 'react'
-import { Navigate } from 'react-router-dom'
-import useAuth from '../hooks/useAuth'
+import React from 'react';
+import { Navigate } from 'react-router-dom';
+import useAuth from '../hooks/useAuth';
 
 const PrivateRoute = ({ element }) => {
-  const { isAuthenticated } = useAuth()
+  const { isAuthenticated } = useAuth();
 
-  return isAuthenticated ? element : <Navigate to="/login"/>
-}
+  return isAuthenticated ? element : <Navigate to="/login" />;
+};
 
-export default PrivateRoute
+export default PrivateRoute;

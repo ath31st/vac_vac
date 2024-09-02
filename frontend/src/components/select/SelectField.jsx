@@ -1,5 +1,5 @@
-import React from 'react'
-import styled from 'styled-components'
+import React from 'react';
+import styled from 'styled-components';
 
 const StyledSelect = styled.select`
     margin: 10px 0;
@@ -7,10 +7,10 @@ const StyledSelect = styled.select`
     font-size: 16px;
     border: 1px solid #ccc;
     border-radius: 4px;
-`
+`;
 
 const SelectField = ({ id, name, value, onChange, options, placeholder }) => {
-  const selectId = id || name
+  const selectId = id || name;
 
   return (
     <StyledSelect id={selectId} name={name} value={value} onChange={onChange}>
@@ -21,7 +21,7 @@ const SelectField = ({ id, name, value, onChange, options, placeholder }) => {
         </option>
       ))}
     </StyledSelect>
-  )
-}
+  );
+};
 
-export default SelectField
+export default SelectField;

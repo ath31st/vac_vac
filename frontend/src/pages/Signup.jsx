@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react'
-import axios from 'axios'
-import InputField from '../components/input/InputField'
-import SubmitButton from '../components/button/SubmitButton'
-import ErrorMessage from '../components/message/ErrorMessage'
-import SelectField from '../components/select/SelectField'
-import { useNavigate } from 'react-router-dom'
-import SignInUpForm from '../components/form/SignInUpForm'
-import SignInUpContainer from '../components/container/SignInUpContainer'
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import InputField from '../components/input/InputField';
+import SubmitButton from '../components/button/SubmitButton';
+import ErrorMessage from '../components/message/ErrorMessage';
+import SelectField from '../components/select/SelectField';
+import { useNavigate } from 'react-router-dom';
+import SignInUpForm from '../components/form/SignInUpForm';
+import SignInUpContainer from '../components/container/SignInUpContainer';
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -17,35 +17,35 @@ const Signup = () => {
     password: '',
     confirmPassword: '',
     role: '',
-  })
+  });
 
-  const [roles, setRoles] = useState([])
-  const [error, setError] = useState('')
-  const navigate = useNavigate()
+  const [roles, setRoles] = useState([]);
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchRoles = async () => {
       try {
-        const response = await axios.get(`/api/v1/roles`)
-        setRoles(response.data)
+        const response = await axios.get('/api/v1/roles');
+        setRoles(response.data);
       } catch (error) {
-        console.error('Error fetching roles:', error)
+        console.error('Error fetching roles:', error);
       }
-    }
+    };
 
-    fetchRoles()
-  })
+    fetchRoles();
+  });
 
   const handleChange = (e) => {
-    const { name, value } = e.target
+    const { name, value } = e.target;
     setFormData({
       ...formData,
       [name]: value,
-    })
-  }
+    });
+  };
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
     if (
       formData.password === '' ||
       formData.email === '' ||
@@ -53,24 +53,24 @@ const Signup = () => {
       formData.lastname === '' ||
       formData.age === ''
     ) {
-      setError('Registration data cannot be empty')
+      setError('Registration data cannot be empty');
     } else if (formData.password !== formData.confirmPassword) {
-      setError('Passwords do not match')
+      setError('Passwords do not match');
     } else {
-      setError('')
+      setError('');
       try {
-        await axios.post(`/api/v1/users`, formData)
-        navigate('/login')
+        await axios.post('/api/v1/users', formData);
+        navigate('/login');
       } catch (error) {
-        console.error('Error during registration:', error)
+        console.error('Error during registration:', error);
         if (error.response && error.response.data) {
-          setError(`Registration failed with cause: ${error.response.data}.`)
+          setError(`Registration failed with cause: ${error.response.data}.`);
         } else {
-          setError(`Registration failed. Please try again.`)
+          setError('Registration failed. Please try again.');
         }
       }
     }
-  }
+  };
 
   return (
     <SignInUpContainer>
@@ -131,7 +131,7 @@ const Signup = () => {
         </SubmitButton>
       </SignInUpForm>
     </SignInUpContainer>
-  )
-}
+  );
+};
 
-export default Signup
+export default Signup;

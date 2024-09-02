@@ -1,24 +1,24 @@
-import React from 'react'
-import styled from 'styled-components'
-import StyledLink from '../components/link/StyledLink'
+import React from 'react';
+import styled from 'styled-components';
+import StyledLink from '../components/link/StyledLink';
 
 const Container = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 60vh;
-`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 60vh;
+`;
 
 const Title = styled.h1`
-    margin-bottom: 20px;
-    color: #333;
-`
+  margin-bottom: 20px;
+  color: #333;
+`;
 
 const ButtonContainer = styled.div`
-    display: flex;
-    gap: 40px;
-`
+  display: flex;
+  gap: 40px;
+`;
 
 const HomePage = () => {
   return (
@@ -29,7 +29,7 @@ const HomePage = () => {
         <StyledLink to="/signup">Sign Up</StyledLink>
       </ButtonContainer>
     </Container>
-  )
-}
+  );
+};
 
-export default HomePage
+export default HomePage;

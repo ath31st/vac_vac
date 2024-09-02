@@ -1,42 +1,42 @@
-import React, { useEffect, useState } from 'react'
-import styled from 'styled-components'
-import InputField from '../components/input/InputField'
-import SelectField from '../components/select/SelectField'
-import SubmitButton from '../components/button/SubmitButton'
-import Sidebar from '../components/Sidebar'
-import { useNavigate } from 'react-router-dom'
-import axios from '../config/axiosConfig'
-import MultiSelectField from '../components/select/MultiSelectField'
-import ErrorMessage from '../components/message/ErrorMessage'
+import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import InputField from '../components/input/InputField';
+import SelectField from '../components/select/SelectField';
+import SubmitButton from '../components/button/SubmitButton';
+import Sidebar from '../components/Sidebar';
+import { useNavigate } from 'react-router-dom';
+import axios from '../config/axiosConfig';
+import MultiSelectField from '../components/select/MultiSelectField';
+import ErrorMessage from '../components/message/ErrorMessage';
 
 const Container = styled.div`
-    display: flex;
-`
+  display: flex;
+`;
 
 const FormContainer = styled.div`
-    padding: 20px;
-    width: 600px;
-`
+  padding: 20px;
+  width: 600px;
+`;
 
 const FieldContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 15px;
-`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+`;
 
 const Label = styled.label`
-    margin-bottom: 5px;
-`
+  margin-bottom: 5px;
+`;
 
 const ButtonContainer = styled.div`
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
 
-    button {
-        margin-left: 10px;
-    }
-`
+  button {
+    margin-left: 10px;
+  }
+`;
 
 const CreateVacancy = () => {
   const [formData, setFormData] = useState({
@@ -45,64 +45,65 @@ const CreateVacancy = () => {
     englishLevel: '',
     grade: '',
     tags: [],
-  })
+  });
 
-  const [englishLevelOptions, setEnglishLevelOptions] = useState([])
-  const [gradeOptions, setGradeOptions] = useState([])
-  const [tagsOptions, setTagsOptions] = useState([])
-  const [error, setError] = useState('')
-  const navigate = useNavigate()
+  const [englishLevelOptions, setEnglishLevelOptions] = useState([]);
+  const [gradeOptions, setGradeOptions] = useState([]);
+  const [tagsOptions, setTagsOptions] = useState([]);
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
-    })
-  }
+    });
+  };
 
   const handleSave = async () => {
     try {
-      await axios.post(`/api/v1/vacancies`, formData)
-      navigate('/vacancies')
+      await axios.post('/api/v1/vacancies', formData);
+      navigate('/vacancies');
     } catch (error) {
-      console.error('Error during creation vacancy:', error)
+      console.error('Error during creation vacancy:', error);
       if (error.response && error.response.data) {
-        setError(`Creation vacancy failed with cause: ${error.response.data}.`)
+        setError(`Creation vacancy failed with cause: ${error.response.data}.`);
       } else {
-        setError(`Creation vacancy failed. Please try again.`)
+        setError('Creation vacancy failed. Please try again.');
       }
     }
-  }
+  };
 
   const handleClose = () => {
-    navigate('/vacancies')
-  }
+    navigate('/vacancies');
+  };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [englishLevelsResponse, gradesResponse, tagsResponse] = await Promise.all(
-          [
-            axios.get(`/api/v1/vacancies/english-levels`),
-            axios.get(`/api/v1/vacancies/education-levels`),
-            axios.get(`/api/v1/vacancies/tags`),
-          ])
+        const [englishLevelsResponse, gradesResponse, tagsResponse] =
+          await Promise.all([
+            axios.get('/api/v1/vacancies/english-levels'),
+            axios.get('/api/v1/vacancies/education-levels'),
+            axios.get('/api/v1/vacancies/tags'),
+          ]);
 
-        setEnglishLevelOptions(englishLevelsResponse.data)
-        setGradeOptions(gradesResponse.data)
+        setEnglishLevelOptions(englishLevelsResponse.data);
+        setGradeOptions(gradesResponse.data);
         setTagsOptions(
-          tagsResponse.data.map(tag => ({ label: tag.name, value: tag.id })))
+          tagsResponse.data.map((tag) => ({ label: tag.name, value: tag.id }))
+        );
       } catch (error) {
-        console.error('Error fetching data:', error)
+        console.error('Error fetching data:', error);
       }
-    }
+    };
 
-    fetchData()
-  }, [])
+    fetchData();
+  }, []);
 
   return (
     <Container>
-      <Sidebar/>
+      <Sidebar />
       <FormContainer>
         <FieldContainer>
           <Label htmlFor="title">Vacancy Title</Label>
@@ -165,7 +166,7 @@ const CreateVacancy = () => {
         </ButtonContainer>
       </FormContainer>
     </Container>
-  )
-}
+  );
+};
 
-export default CreateVacancy
+export default CreateVacancy;

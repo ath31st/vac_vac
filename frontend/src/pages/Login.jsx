@@ -1,43 +1,43 @@
-import React, { useState, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import InputField from '../components/input/InputField'
-import SubmitButton from '../components/button/SubmitButton'
-import ErrorMessage from '../components/message/ErrorMessage'
-import { Link, useNavigate } from 'react-router-dom'
-import { login } from '../redux/authSlice'
-import SignInUpForm from '../components/form/SignInUpForm'
-import SignInUpContainer from '../components/container/SignInUpContainer'
-import LabelWithLink from '../components/label/LabelWithLink'
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import InputField from '../components/input/InputField';
+import SubmitButton from '../components/button/SubmitButton';
+import ErrorMessage from '../components/message/ErrorMessage';
+import { Link, useNavigate } from 'react-router-dom';
+import { login } from '../redux/authSlice';
+import SignInUpForm from '../components/form/SignInUpForm';
+import SignInUpContainer from '../components/container/SignInUpContainer';
+import LabelWithLink from '../components/label/LabelWithLink';
 
 const Login = () => {
   const [formState, setFormState] = useState({
     email: '',
     password: '',
-  })
+  });
 
-  const dispatch = useDispatch()
-  const error = useSelector((state) => state.auth.error)
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated)
-  const navigate = useNavigate()
+  const dispatch = useDispatch();
+  const error = useSelector((state) => state.auth.error);
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
-    const { name, value } = e.target
+    const { name, value } = e.target;
     setFormState({
       ...formState,
       [name]: value,
-    })
-  }
+    });
+  };
 
   const handleSubmit = (e) => {
-    e.preventDefault()
-    dispatch(login(formState))
-  }
+    e.preventDefault();
+    dispatch(login(formState));
+  };
 
   useEffect(() => {
     if (isAuthenticated) {
-      navigate('/vacancies')
+      navigate('/vacancies');
     }
-  }, [isAuthenticated, navigate])
+  }, [isAuthenticated, navigate]);
 
   return (
     <SignInUpContainer>
@@ -64,7 +64,7 @@ const Login = () => {
         </LabelWithLink>
       </SignInUpForm>
     </SignInUpContainer>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;
