@@ -21,15 +21,21 @@ const Text = styled.span`
 `;
 
 const Header = () => {
+  // @ts-expect-error TS(2571): Object is of type 'unknown'.
   const user = useSelector((state) => state.auth.user);
 
   return (
+    // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
     <HeaderContainer>
+      // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
       <h1>Vac Vac Project</h1>
+      // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
       <NavLinks>
         {user !== null ? (
+          // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
           <Text>{user.email}</Text>
         ) : (
+          // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
           <Text>You are not authorized</Text>
         )}
       </NavLinks>

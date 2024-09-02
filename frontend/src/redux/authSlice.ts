@@ -20,6 +20,7 @@ export const login = createAsyncThunk(
       return { token, user };
     } catch (error) {
       return rejectWithValue(
+        // @ts-expect-error TS(2571): Object is of type 'unknown'.
         error.response ? error.response.data.message : 'Server error');
     }
   });
@@ -41,6 +42,7 @@ const authSlice = createSlice({
     token: localStorage.getItem('jwtToken'),
     isAuthenticated: !!localStorage.getItem('jwtToken'),
     user: localStorage.getItem('jwtToken') ? jwtDecode(
+      // @ts-expect-error TS(2345): Argument of type 'string | null' is not assignable... Remove this comment to see the full error message
       localStorage.getItem('jwtToken')) : null,
     error: null,
   },
@@ -49,9 +51,11 @@ const authSlice = createSlice({
     builder.addCase(login.fulfilled, (state, action) => {
       state.token = action.payload.token;
       state.isAuthenticated = true;
+      // @ts-expect-error TS(2559): Type 'JwtPayload' has no properties in common with... Remove this comment to see the full error message
       state.user = action.payload.user;
       state.error = null;
     }).addCase(login.rejected, (state, action) => {
+      // @ts-expect-error TS(2322): Type 'unknown' is not assignable to type 'null'.
       state.error = action.payload;
       state.token = null;
       state.user = null;
@@ -62,6 +66,7 @@ const authSlice = createSlice({
       state.user = null;
       state.error = null;
     }).addCase(performLogout.rejected, (state, action) => {
+      // @ts-expect-error TS(2322): Type 'unknown' is not assignable to type 'null'.
       state.error = action.payload;
     });
   },

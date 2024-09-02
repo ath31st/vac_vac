@@ -58,21 +58,28 @@ const Vacancy = ({
   hasResponded,
   responseCount,
   isVisible,
-  onClick,
-}) => {
+  onClick
+}: any) => {
   return (
+    // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
     <Container onClick={onClick}>
+      // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
       {!isVisible && <ClosedOverlay>Closed</ClosedOverlay>}
+      // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
       <div>
+        // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
         <VacancyTitle>{title}</VacancyTitle>
+        // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
         <VacancyDescription>{description}</VacancyDescription>
       </div>
       {hasResponded && (
+        // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
         <ResponseStatus>
           {hasResponded ? '✔ You responded' : '❌ Not responded'}
         </ResponseStatus>
       )}
       {responseCount !== null && (
+        // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
         <ResponseCount>{responseCount} responses</ResponseCount>
       )}
     </Container>
