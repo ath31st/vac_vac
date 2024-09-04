@@ -1,11 +1,11 @@
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-// @ts-expect-error TS(6142): Module '../components/Vacancy' was resolved to '/h... Remove this comment to see the full error message
-import Vacancy from '../components/Vacancy';
-import { useEffect, useState } from 'react';
 import axios from '../config/axiosConfig';
-// @ts-expect-error TS(6142): Module '../components/VacancyDetails' was resolved... Remove this comment to see the full error message
+import Vacancy from '../components/Vacancy';
 import VacancyDetails from '../components/VacancyDetails';
 import { useSelector } from 'react-redux';
+import { RootState } from '../redux/store';
+import { VacancyData } from '../types';
 
 const VacanciesContainer = styled.div`
   display: flex;
@@ -14,30 +14,35 @@ const VacanciesContainer = styled.div`
   padding: 20px;
 `;
 
-const VacanciesList = ({
-  endpoint
-}: any) => {
-  const [selectedVacancy, setSelectedVacancy] = useState(null);
-  const [vacancies, setVacancies] = useState([]);
-  // @ts-expect-error TS(2571): Object is of type 'unknown'.
-  const role = useSelector((state) => state.auth.user?.role);
-  // @ts-expect-error TS(2571): Object is of type 'unknown'.
-  const userId = useSelector((state) => state.auth.user?.user_id);
+interface VacanciesListProps {
+  endpoint: string;
+}
+
+const VacanciesList: React.FC<VacanciesListProps> = ({ endpoint }) => {
+  const [selectedVacancy, setSelectedVacancy] = useState<VacancyData | null>(
+    null
+  );
+  const [vacancies, setVacancies] = useState<VacancyData[]>([]);
+  const role = useSelector((state: RootState) => state.auth.user?.role);
+  const userId = useSelector((state: RootState) => state.auth.user?.user_id);
 
   useEffect(() => {
     const fetchVacancies = async () => {
       try {
-        const response = await axios.get(endpoint);
-        setVacancies(response.data);
+        const response = await axios.get<VacancyData[]>(endpoint);
+        const fetchedVacancies = response.data;
+        setVacancies(fetchedVacancies);
 
         setTimeout(() => {
           if (role === 0) {
-            fetchResponseStatuses(response.data.map((vacancy: any) => vacancy.id));
+            fetchResponseStatuses(
+              fetchedVacancies.map((vacancy) => vacancy.id)
+            );
           } else if (role === 1) {
             fetchResponseCounts(
-              response.data
-                .filter((vacancy: any) => vacancy.creatorId === userId)
-                .map((vacancy: any) => vacancy.id)
+              fetchedVacancies
+                .filter((vacancy) => vacancy.creatorId === userId)
+                .map((vacancy) => vacancy.id)
             );
           }
         }, 200);
@@ -49,20 +54,17 @@ const VacanciesList = ({
     fetchVacancies();
   }, [endpoint, role, userId]);
 
-  const fetchResponseStatuses = async (vacancyIds: any) => {
+  const fetchResponseStatuses = async (vacancyIds: string[]) => {
     try {
-      const response = await axios.post(
+      const response = await axios.post<{ [key: string]: boolean }>(
         '/api/v1/vacancies/response-statuses',
         vacancyIds
       );
       const statuses = response.data;
 
-      // @ts-expect-error TS(2345): Argument of type '(prevVacancies: never[]) => any[... Remove this comment to see the full error message
       setVacancies((prevVacancies) =>
         prevVacancies.map((vacancy) => ({
-          // @ts-expect-error TS(2698): Spread types may only be created from object types... Remove this comment to see the full error message
           ...vacancy,
-          // @ts-expect-error TS(2339): Property 'id' does not exist on type 'never'.
           hasResponded: statuses[vacancy.id] || false,
         }))
       );
@@ -71,20 +73,17 @@ const VacanciesList = ({
     }
   };
 
-  const fetchResponseCounts = async (vacancyIds: any) => {
+  const fetchResponseCounts = async (vacancyIds: string[]) => {
     try {
-      const response = await axios.post(
+      const response = await axios.post<{ [key: string]: number }>(
         '/api/v1/vacancies/response-counts',
         vacancyIds
       );
       const counts = response.data;
 
-      // @ts-expect-error TS(2345): Argument of type '(prevVacancies: never[]) => any[... Remove this comment to see the full error message
       setVacancies((prevVacancies) =>
         prevVacancies.map((vacancy) => ({
-          // @ts-expect-error TS(2698): Spread types may only be created from object types... Remove this comment to see the full error message
           ...vacancy,
-          // @ts-expect-error TS(2339): Property 'id' does not exist on type 'never'.
           responseCount: counts[vacancy.id] || 0,
         }))
       );
@@ -93,13 +92,15 @@ const VacanciesList = ({
     }
   };
 
-  const fetchVacancyDetails = async (vacancyId: any) => {
+  const fetchVacancyDetails = async (vacancyId: string) => {
     try {
-      const response = await axios.get(`/api/v1/vacancies/${vacancyId}`);
+      const response = await axios.get<VacancyData>(
+        `/api/v1/vacancies/${vacancyId}`
+      );
       const vacancyDetails = response.data;
 
       if (role === 0) {
-        const statusResponse = await axios.post(
+        const statusResponse = await axios.post<{ [key: string]: boolean }>(
           '/api/v1/vacancies/response-statuses',
           [vacancyId]
         );
@@ -117,8 +118,7 @@ const VacanciesList = ({
     }
   };
 
-  const handleVacancyClick = (vacancyId: any) => {
-    // @ts-expect-error TS(2339): Property 'id' does not exist on type 'never'.
+  const handleVacancyClick = (vacancyId: string) => {
     if (selectedVacancy && selectedVacancy.id === vacancyId) {
       setSelectedVacancy(null);
     } else {
@@ -126,61 +126,44 @@ const VacanciesList = ({
     }
   };
 
-  const removeVacancy = (vacancyId: any) => {
-    // @ts-expect-error TS(2339): Property 'id' does not exist on type 'never'.
+  const removeVacancy = (vacancyId: string) => {
     setVacancies(vacancies.filter((vacancy) => vacancy.id !== vacancyId));
     setSelectedVacancy(null);
   };
 
-  const handleVacancyChange = (updatedVacancy: any) => {
-    // @ts-expect-error TS(2345): Argument of type '(prevVacancies: never[]) => any[... Remove this comment to see the full error message
+  const handleVacancyChange = (updatedVacancy: VacancyData) => {
     setVacancies((prevVacancies) =>
       prevVacancies.map((vacancy) =>
-        // @ts-expect-error TS(2339): Property 'id' does not exist on type 'never'.
         vacancy.id === updatedVacancy.id ? updatedVacancy : vacancy
       )
     );
   };
 
   return (
-    // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
-    <>
-      // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
-      <VacanciesContainer>
-        {vacancies.map((vacancy) => (
-          // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
-          <Vacancy
-            // @ts-expect-error TS(2339): Property 'id' does not exist on type 'never'.
-            key={vacancy.id}
-            // @ts-expect-error TS(2339): Property 'title' does not exist on type 'never'.
-            title={vacancy.title}
-            // @ts-expect-error TS(2339): Property 'description' does not exist on type 'nev... Remove this comment to see the full error message
-            description={vacancy.description}
-            // @ts-expect-error TS(2339): Property 'isVisible' does not exist on type 'never... Remove this comment to see the full error message
-            isVisible={vacancy.isVisible}
-            // @ts-expect-error TS(2339): Property 'hasResponded' does not exist on type 'ne... Remove this comment to see the full error message
-            hasResponded={role === 0 ? vacancy.hasResponded : null}
-            responseCount={
-              // @ts-expect-error TS(2339): Property 'creatorId' does not exist on type 'never... Remove this comment to see the full error message
-              role === 1 && vacancy.creatorId === userId
-                // @ts-expect-error TS(2339): Property 'responseCount' does not exist on type 'n... Remove this comment to see the full error message
-                ? vacancy.responseCount
-                : null
-            }
-            // @ts-expect-error TS(2339): Property 'id' does not exist on type 'never'.
-            onClick={() => handleVacancyClick(vacancy.id)}
-          />
-        ))}
-      </VacanciesContainer>
+    <VacanciesContainer>
+      {vacancies.map((vacancy) => (
+        <Vacancy
+          key={vacancy.id}
+          title={vacancy.title}
+          description={vacancy.description}
+          isVisible={vacancy.isVisible}
+          hasResponded={role === 0 ? vacancy.hasResponded : undefined}
+          responseCount={
+            role === 1 && vacancy.creatorId === userId
+              ? vacancy.responseCount
+              : undefined
+          }
+          onClick={() => handleVacancyClick(vacancy.id)}
+        />
+      ))}
       {selectedVacancy && (
-        // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
         <VacancyDetails
           vacancy={selectedVacancy}
           onRemoveVacancy={removeVacancy}
           onVacancyChange={handleVacancyChange}
         />
       )}
-    </>
+    </VacanciesContainer>
   );
 };
 

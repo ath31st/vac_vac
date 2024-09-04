@@ -52,34 +52,36 @@ const ClosedOverlay = styled.div`
   pointer-events: none;
 `;
 
-const Vacancy = ({
+interface VacancyProps {
+  title: string;
+  description: string;
+  hasResponded?: boolean;
+  responseCount?: number | null;
+  isVisible: boolean;
+  onClick: () => void;
+}
+
+const Vacancy: React.FC<VacancyProps> = ({
   title,
   description,
   hasResponded,
   responseCount,
   isVisible,
-  onClick
-}: any) => {
+  onClick,
+}) => {
   return (
-    // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
     <Container onClick={onClick}>
-      // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
       {!isVisible && <ClosedOverlay>Closed</ClosedOverlay>}
-      // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
       <div>
-        // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
         <VacancyTitle>{title}</VacancyTitle>
-        // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
         <VacancyDescription>{description}</VacancyDescription>
       </div>
-      {hasResponded && (
-        // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
+      {hasResponded !== undefined && (
         <ResponseStatus>
           {hasResponded ? '✔ You responded' : '❌ Not responded'}
         </ResponseStatus>
       )}
-      {responseCount !== null && (
-        // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
+      {responseCount !== null && responseCount !== undefined && (
         <ResponseCount>{responseCount} responses</ResponseCount>
       )}
     </Container>
