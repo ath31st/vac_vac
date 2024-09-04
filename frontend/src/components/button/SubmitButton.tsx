@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import React from 'react';
 
 const StyledButton = styled.button`
   font-size: 16px;
@@ -21,13 +22,18 @@ const StyledButton = styled.button`
   }
 `;
 
-const SubmitButton = ({
-  type,
+interface SubmitButtonProps {
+  type?: 'button' | 'submit' | 'reset';
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  children: React.ReactNode;
+}
+
+const SubmitButton: React.FC<SubmitButtonProps> = ({
+  type = 'button',
   onClick,
-  children
-}: any) => {
+  children,
+}) => {
   return (
-    // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
     <StyledButton type={type} onClick={onClick}>
       {children}
     </StyledButton>
