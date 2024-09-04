@@ -9,18 +9,26 @@ const StyledInput = styled.input`
   border-radius: 4px;
 `;
 
-const InputField = ({
+interface InputFieldProps {
+  id?: string;
+  type?: string;
+  name?: string;
+  placeholder?: string;
+  value?: string | number;
+  onChange?: React.ChangeEventHandler<HTMLInputElement>;
+}
+
+const InputField: React.FC<InputFieldProps> = ({
   id,
-  type,
+  type = 'text',
   name,
   placeholder,
   value,
-  onChange
-}: any) => {
+  onChange,
+}) => {
   const inputId = id || name;
 
   return (
-    // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
     <StyledInput
       id={inputId}
       type={type}
