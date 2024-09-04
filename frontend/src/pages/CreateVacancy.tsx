@@ -1,19 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-// @ts-expect-error TS(6142): Module '../components/input/InputField' was resolv... Remove this comment to see the full error message
 import InputField from '../components/input/InputField';
-// @ts-expect-error TS(6142): Module '../components/select/SelectField' was reso... Remove this comment to see the full error message
 import SelectField from '../components/select/SelectField';
-// @ts-expect-error TS(6142): Module '../components/button/SubmitButton' was res... Remove this comment to see the full error message
 import SubmitButton from '../components/button/SubmitButton';
-// @ts-expect-error TS(6142): Module '../components/Sidebar' was resolved to '/h... Remove this comment to see the full error message
 import Sidebar from '../components/Sidebar';
 import { useNavigate } from 'react-router-dom';
 import axios from '../config/axiosConfig';
-// @ts-expect-error TS(6142): Module '../components/select/MultiSelectField' was... Remove this comment to see the full error message
 import MultiSelectField from '../components/select/MultiSelectField';
-// @ts-expect-error TS(6142): Module '../components/message/ErrorMessage' was re... Remove this comment to see the full error message
 import ErrorMessage from '../components/message/ErrorMessage';
+import { EnglishGradeLvlsType, GradeType, Option, TagType } from '../types';
 
 const Container = styled.div`
   display: flex;
@@ -44,8 +39,16 @@ const ButtonContainer = styled.div`
   }
 `;
 
-const CreateVacancy = () => {
-  const [formData, setFormData] = useState({
+interface FormData {
+  title: string;
+  description: string;
+  englishLevel: string;
+  grade: string;
+  tags: string[];
+}
+
+const CreateVacancy: React.FC = () => {
+  const [formData, setFormData] = useState<FormData>({
     title: '',
     description: '',
     englishLevel: '',
@@ -53,13 +56,15 @@ const CreateVacancy = () => {
     tags: [],
   });
 
-  const [englishLevelOptions, setEnglishLevelOptions] = useState([]);
-  const [gradeOptions, setGradeOptions] = useState([]);
-  const [tagsOptions, setTagsOptions] = useState([]);
-  const [error, setError] = useState('');
+  const [englishLevelOptions, setEnglishLevelOptions] = useState<Option[]>([]);
+  const [gradeOptions, setGradeOptions] = useState<Option[]>([]);
+  const [tagsOptions, setTagsOptions] = useState<Option[]>([]);
+  const [error, setError] = useState<string>('');
   const navigate = useNavigate();
 
-  const handleChange = (e: any) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
@@ -68,13 +73,16 @@ const CreateVacancy = () => {
 
   const handleSave = async () => {
     try {
-      await axios.post('/api/v1/vacancies', formData);
+      const tags = formData.tags.map((id) => parseInt(id));
+      const dataToSend = {
+        ...formData,
+        tags,
+      };
+      await axios.post('/api/v1/vacancies', dataToSend);
       navigate('/vacancies');
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('Error during creation vacancy:', error);
-      // @ts-expect-error TS(2571): Object is of type 'unknown'.
-      if (error.response && error.response.data) {
-        // @ts-expect-error TS(2571): Object is of type 'unknown'.
+      if (axios.isAxiosError(error) && error.response && error.response.data) {
         setError(`Creation vacancy failed with cause: ${error.response.data}.`);
       } else {
         setError('Creation vacancy failed. Please try again.');
@@ -96,12 +104,22 @@ const CreateVacancy = () => {
             axios.get('/api/v1/vacancies/tags'),
           ]);
 
-        setEnglishLevelOptions(englishLevelsResponse.data);
-        setGradeOptions(gradesResponse.data);
+        setEnglishLevelOptions(
+          englishLevelsResponse.data.map((item: EnglishGradeLvlsType) => ({
+            label: item.name,
+            value: item.id.toString(),
+          }))
+        );
+        setGradeOptions(
+          gradesResponse.data.map((item: GradeType) => ({
+            label: item.name,
+            value: item.id.toString(),
+          }))
+        );
         setTagsOptions(
-          tagsResponse.data.map((tag: any) => ({
+          tagsResponse.data.map((tag: TagType) => ({
             label: tag.name,
-            value: tag.id
+            value: tag.id.toString(),
           }))
         );
       } catch (error) {
@@ -113,17 +131,11 @@ const CreateVacancy = () => {
   }, []);
 
   return (
-    // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
     <Container>
-      // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
       <Sidebar />
-      // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
       <FormContainer>
-        // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
         <FieldContainer>
-          // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
           <Label htmlFor="title">Vacancy Title</Label>
-          // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
           <InputField
             id="title"
             type="text"
@@ -133,11 +145,8 @@ const CreateVacancy = () => {
             onChange={handleChange}
           />
         </FieldContainer>
-        // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
         <FieldContainer>
-          // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
           <Label htmlFor="description">Vacancy Description</Label>
-          // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
           <InputField
             id="description"
             type="text"
@@ -147,25 +156,19 @@ const CreateVacancy = () => {
             onChange={handleChange}
           />
         </FieldContainer>
-        // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
         <FieldContainer>
-          // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
           <Label htmlFor="englishLevel">English Level</Label>
-          // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
           <SelectField
             id="englishLevel"
             name="englishLevel"
             value={formData.englishLevel}
             onChange={handleChange}
             options={englishLevelOptions}
-            placeholder="Select an english level"
+            placeholder="Select an English level"
           />
         </FieldContainer>
-        // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
         <FieldContainer>
-          // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
           <Label htmlFor="grade">Grade</Label>
-          // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
           <SelectField
             id="grade"
             name="grade"
@@ -175,26 +178,21 @@ const CreateVacancy = () => {
             placeholder="Select a grade"
           />
         </FieldContainer>
-        // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
         <FieldContainer>
-          // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
           <Label htmlFor="tags">Tags</Label>
-          // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
           <MultiSelectField
             name="tags"
             value={formData.tags}
-            onChange={handleChange}
+            onChange={(event) =>
+              setFormData({ ...formData, tags: event.target.value })
+            }
             options={tagsOptions}
             placeholder="Select tags"
           />
         </FieldContainer>
-        // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
         {error && <ErrorMessage>{error}</ErrorMessage>}
-        // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
         <ButtonContainer>
-          // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
           <SubmitButton onClick={handleClose}>Close</SubmitButton>
-          // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
           <SubmitButton onClick={handleSave}>Save</SubmitButton>
         </ButtonContainer>
       </FormContainer>
