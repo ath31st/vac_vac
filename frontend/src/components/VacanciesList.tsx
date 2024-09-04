@@ -140,22 +140,24 @@ const VacanciesList: React.FC<VacanciesListProps> = ({ endpoint }) => {
   };
 
   return (
-    <VacanciesContainer>
-      {vacancies.map((vacancy) => (
-        <Vacancy
-          key={vacancy.id}
-          title={vacancy.title}
-          description={vacancy.description}
-          isVisible={vacancy.isVisible}
-          hasResponded={role === 0 ? vacancy.hasResponded : undefined}
-          responseCount={
-            role === 1 && vacancy.creatorId === userId
-              ? vacancy.responseCount
-              : undefined
-          }
-          onClick={() => handleVacancyClick(vacancy.id)}
-        />
-      ))}
+    <>
+      <VacanciesContainer>
+        {vacancies.map((vacancy) => (
+          <Vacancy
+            key={vacancy.id}
+            title={vacancy.title}
+            description={vacancy.description}
+            isVisible={vacancy.isVisible}
+            hasResponded={role === 0 ? vacancy.hasResponded : undefined}
+            responseCount={
+              role === 1 && vacancy.creatorId === userId
+                ? vacancy.responseCount
+                : undefined
+            }
+            onClick={() => handleVacancyClick(vacancy.id)}
+          />
+        ))}
+      </VacanciesContainer>
       {selectedVacancy && (
         <VacancyDetails
           vacancy={selectedVacancy}
@@ -163,7 +165,7 @@ const VacanciesList: React.FC<VacanciesListProps> = ({ endpoint }) => {
           onVacancyChange={handleVacancyChange}
         />
       )}
-    </VacanciesContainer>
+    </>
   );
 };
 
