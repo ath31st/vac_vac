@@ -1,26 +1,38 @@
-import { MultiSelect } from 'react-multi-select-component';
 import React from 'react';
+import { MultiSelect } from 'react-multi-select-component';
+import { Option as CustomOption } from '../../types';
 
-const MultiSelectField = ({
+interface MultiSelectFieldProps {
+  name: string;
+  value: string[];
+  onChange: (event: { target: { name: string; value: string[] } }) => void;
+  options: CustomOption[];
+  placeholder?: string;
+}
+
+const MultiSelectField: React.FC<MultiSelectFieldProps> = ({
   name,
   value,
   onChange,
   options,
-  placeholder
-}: any) => {
-  const handleChange = (selectedOptions: any) => {
-    const selectedIds = selectedOptions.map((option: any) => option.value);
-    onChange({ target: { name, value: selectedIds } });
+  placeholder,
+}) => {
+  const handleChange = (selectedOptions: CustomOption[]) => {
+    const selectedValues = selectedOptions.map((option) => option.value);
+    onChange({
+      target: { name, value: selectedValues },
+    });
   };
 
   return (
-    // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
     <div>
-      // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
       <MultiSelect
         className="multi-select"
-        options={options}
-        value={options.filter((option: any) => value.includes(option.value))}
+        options={options.map((option) => ({
+          label: option.label,
+          value: option.value,
+        }))}
+        value={options.filter((option) => value.includes(option.value))}
         onChange={handleChange}
         labelledBy={placeholder || 'Select'}
       />
