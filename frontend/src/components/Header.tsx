@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
+import { RootState } from '../redux/store';
 
 const HeaderContainer = styled.header`
   background-color: #333;
@@ -20,24 +21,14 @@ const Text = styled.span`
   color: #ccc;
 `;
 
-const Header = () => {
-  // @ts-expect-error TS(2571): Object is of type 'unknown'.
-  const user = useSelector((state) => state.auth.user);
+const Header: React.FC = () => {
+  const user = useSelector((state: RootState) => state.auth.user);
 
   return (
-    // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
     <HeaderContainer>
-      // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
       <h1>Vac Vac Project</h1>
-      // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
       <NavLinks>
-        {user !== null ? (
-          // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
-          <Text>{user.email}</Text>
-        ) : (
-          // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
-          <Text>You are not authorized</Text>
-        )}
+        {user ? <Text>{user.email}</Text> : <Text>You are not authorized</Text>}
       </NavLinks>
     </HeaderContainer>
   );
