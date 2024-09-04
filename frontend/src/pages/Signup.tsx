@@ -1,21 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-// @ts-expect-error TS(6142): Module '../components/input/InputField' was resolv... Remove this comment to see the full error message
 import InputField from '../components/input/InputField';
-// @ts-expect-error TS(6142): Module '../components/button/SubmitButton' was res... Remove this comment to see the full error message
 import SubmitButton from '../components/button/SubmitButton';
-// @ts-expect-error TS(6142): Module '../components/message/ErrorMessage' was re... Remove this comment to see the full error message
 import ErrorMessage from '../components/message/ErrorMessage';
-// @ts-expect-error TS(6142): Module '../components/select/SelectField' was reso... Remove this comment to see the full error message
 import SelectField from '../components/select/SelectField';
-import { useNavigate } from 'react-router-dom';
-// @ts-expect-error TS(6142): Module '../components/form/SignInUpForm' was resol... Remove this comment to see the full error message
 import SignInUpForm from '../components/form/SignInUpForm';
-// @ts-expect-error TS(6142): Module '../components/container/SignInUpContainer'... Remove this comment to see the full error message
 import SignInUpContainer from '../components/container/SignInUpContainer';
+import { useNavigate } from 'react-router-dom';
+import { Option as CustomOption } from '../types';
 
-const Signup = () => {
-  const [formData, setFormData] = useState({
+interface FormData {
+  firstname: string;
+  lastname: string;
+  email: string;
+  age: string;
+  password: string;
+  confirmPassword: string;
+  role: string;
+}
+
+const Signup: React.FC = () => {
+  const [formData, setFormData] = useState<FormData>({
     firstname: '',
     lastname: '',
     email: '',
@@ -25,8 +30,8 @@ const Signup = () => {
     role: '',
   });
 
-  const [roles, setRoles] = useState([]);
-  const [error, setError] = useState('');
+  const [roles, setRoles] = useState<CustomOption[]>([]);
+  const [error, setError] = useState<string>('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -40,9 +45,11 @@ const Signup = () => {
     };
 
     fetchRoles();
-  });
+  }, []);
 
-  const handleChange = (e: any) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
@@ -50,7 +57,7 @@ const Signup = () => {
     });
   };
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (
       formData.password === '' ||
@@ -67,11 +74,13 @@ const Signup = () => {
       try {
         await axios.post('/api/v1/users', formData);
         navigate('/login');
-      } catch (error) {
+      } catch (error: unknown) {
         console.error('Error during registration:', error);
-        // @ts-expect-error TS(2571): Object is of type 'unknown'.
-        if (error.response && error.response.data) {
-          // @ts-expect-error TS(2571): Object is of type 'unknown'.
+        if (
+          axios.isAxiosError(error) &&
+          error.response &&
+          error.response.data
+        ) {
           setError(`Registration failed with cause: ${error.response.data}.`);
         } else {
           setError('Registration failed. Please try again.');
@@ -81,13 +90,9 @@ const Signup = () => {
   };
 
   return (
-    // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
     <SignInUpContainer>
-      // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
       <SignInUpForm onSubmit={handleSubmit}>
-        // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
         <h2>Signup</h2>
-        // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
         <InputField
           type="text"
           name="firstname"
@@ -95,7 +100,6 @@ const Signup = () => {
           value={formData.firstname}
           onChange={handleChange}
         />
-        // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
         <InputField
           type="text"
           name="lastname"
@@ -103,7 +107,6 @@ const Signup = () => {
           value={formData.lastname}
           onChange={handleChange}
         />
-        // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
         <InputField
           type="email"
           name="email"
@@ -111,23 +114,20 @@ const Signup = () => {
           value={formData.email}
           onChange={handleChange}
         />
-        // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
         <InputField
-          type="age"
+          type="number"
           name="age"
           placeholder="Age"
           value={formData.age}
           onChange={handleChange}
         />
-        // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
         <SelectField
           name="role"
           value={formData.role}
           onChange={handleChange}
           options={roles}
-          placeholder={'Select a role'}
+          placeholder="Select a role"
         />
-        // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
         <InputField
           type="password"
           name="password"
@@ -135,7 +135,6 @@ const Signup = () => {
           value={formData.password}
           onChange={handleChange}
         />
-        // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
         <InputField
           type="password"
           name="confirmPassword"
@@ -143,12 +142,8 @@ const Signup = () => {
           value={formData.confirmPassword}
           onChange={handleChange}
         />
-        // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
         {error && <ErrorMessage>{error}</ErrorMessage>}
-        // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
-        <SubmitButton type="submit" onClick={handleSubmit}>
-          Sign Up
-        </SubmitButton>
+        <SubmitButton type="submit">Sign Up</SubmitButton>
       </SignInUpForm>
     </SignInUpContainer>
   );
