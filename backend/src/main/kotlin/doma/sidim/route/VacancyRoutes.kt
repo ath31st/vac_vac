@@ -20,7 +20,7 @@ fun Route.vacancyRoutes(vacancyService: VacancyService) {
 
         post("/vacancies") {
             val principal = call.principal<JWTPrincipal>()!!
-            if (!principal.hasRole(Roles.EMPLOYEE)) {
+            if (!principal.hasRole(Roles.EMPLOYER)) {
                 call.respond(HttpStatusCode.Forbidden)
                 return@post
             }
