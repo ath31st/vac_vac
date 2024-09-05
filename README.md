@@ -80,7 +80,7 @@ job seekers and employers.
 
 ## Technology Stack
 
-- **Frontend**: JS (React, Redux, Styled-components).
+- **Frontend**: TS (React, Redux toolkit, Styled-components).
 - **Backend**: Kotlin (Ktor, exposed, sqlite).
 
 ## Setup Instructions
