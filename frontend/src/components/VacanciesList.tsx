@@ -1,18 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
 import axios from '../config/axiosConfig';
 import Vacancy from '../components/Vacancy';
 import VacancyDetails from '../components/VacancyDetails';
 import { useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
 import { VacancyData } from '../types';
-
-const VacanciesContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  padding: 20px;
-`;
+import VacanciesContainer from './container/VacanciesContainer';
 
 interface VacanciesListProps {
   endpoint: string;
