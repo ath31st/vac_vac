@@ -24,7 +24,7 @@ class VacancyRepository : CrudRepository<Vacancy> {
 
     override fun read(id: Long): Vacancy? {
         return transaction {
-            Vacancies.select { Vacancies.id eq id }
+            Vacancies.selectAll().where { Vacancies.id eq id }
                 .mapNotNull { it.toVacancy() }
                 .singleOrNull()
         }
@@ -46,14 +46,14 @@ class VacancyRepository : CrudRepository<Vacancy> {
 
     fun getActiveVacancies(): List<Vacancy> {
         return transaction {
-            Vacancies.select { Vacancies.isVisible eq true }
+            Vacancies.selectAll().where { Vacancies.isVisible eq true }
                 .map { it.toVacancy() }
         }
     }
 
     fun getVacanciesByCreator(creatorId: Long): List<Vacancy> {
         return transaction {
-            Vacancies.select { Vacancies.creatorId eq creatorId }
+            Vacancies.selectAll().where { Vacancies.creatorId eq creatorId }
                 .mapNotNull { it.toVacancy() }
         }
     }
@@ -61,7 +61,7 @@ class VacancyRepository : CrudRepository<Vacancy> {
     fun getVacanciesByUserResponses(userId: Long): List<Vacancy> {
         return transaction {
             (Vacancies innerJoin VacancyResponses)
-                .select { VacancyResponses.userId eq userId }
+                .selectAll().where { VacancyResponses.userId eq userId }
                 .map { it.toVacancy() }
         }
     }

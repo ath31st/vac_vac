@@ -20,7 +20,7 @@ class VacancyResponseRepository : CrudRepository<VacancyResponse> {
 
     override fun read(id: Long): VacancyResponse? {
         return transaction {
-            VacancyResponses.select { VacancyResponses.id eq id }
+            VacancyResponses.selectAll().where { VacancyResponses.id eq id }
                 .mapNotNull {
                     VacancyResponse(
                         id = it[VacancyResponses.id],
@@ -48,7 +48,7 @@ class VacancyResponseRepository : CrudRepository<VacancyResponse> {
 
     fun vacancyResponseExists(vacancyId: Long, userId: Long): Boolean {
         return transaction {
-            VacancyResponses.select {
+            VacancyResponses.selectAll().where {
                 VacancyResponses.vacancyId eq vacancyId and
                         VacancyResponses.userId.eq(userId)
             }.any()
@@ -65,7 +65,7 @@ class VacancyResponseRepository : CrudRepository<VacancyResponse> {
 
     fun getResponseStatuses(vacancyIds: List<Long>, userId: Long): Map<Long, Boolean> {
         return transaction {
-            VacancyResponses.select {
+            VacancyResponses.selectAll().where {
                 (VacancyResponses.vacancyId inList vacancyIds) and
                         (VacancyResponses.userId eq userId)
             }.associate { it[VacancyResponses.vacancyId] to true }
@@ -75,7 +75,7 @@ class VacancyResponseRepository : CrudRepository<VacancyResponse> {
     fun getResponseCounts(vacancyIds: List<Long>): Map<Long, Long> {
         return transaction {
             VacancyResponses.slice(VacancyResponses.vacancyId, VacancyResponses.vacancyId.count())
-                .select { VacancyResponses.vacancyId inList vacancyIds }
+                .selectAll().where { VacancyResponses.vacancyId inList vacancyIds }
                 .groupBy(VacancyResponses.vacancyId)
                 .associate { it[VacancyResponses.vacancyId] to it[VacancyResponses.vacancyId.count()] }
         }
