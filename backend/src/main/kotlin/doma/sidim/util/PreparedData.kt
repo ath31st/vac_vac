@@ -4,13 +4,13 @@ import at.favre.lib.crypto.bcrypt.BCrypt
 import doma.sidim.model.Users
 import doma.sidim.model.Vacancies
 import org.jetbrains.exposed.sql.insert
-import org.jetbrains.exposed.sql.select
+import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 
 object PreparedData {
     fun insertInitialData() {
         transaction {
-            if (Users.select { Users.email eq "petr@petrov.com" }.empty()) {
+            if (Users.selectAll().where { Users.email eq "petr@petrov.com" }.empty()) {
                 Users.insert {
                     it[firstname] = "Petr"
                     it[lastname] = "Petrov"
@@ -21,7 +21,7 @@ object PreparedData {
                 }
             }
 
-            if (Users.select { Users.email eq "oleg@olegov.com" }.empty()) {
+            if (Users.selectAll().where { Users.email eq "oleg@olegov.com" }.empty()) {
                 Users.insert {
                     it[firstname] = "Oleg"
                     it[lastname] = "Olegov"
@@ -32,7 +32,7 @@ object PreparedData {
                 }
             }
 
-            if (Vacancies.select { Vacancies.title eq "System Administrator" }.empty()) {
+            if (Vacancies.selectAll().where { Vacancies.title eq "System Administrator" }.empty()) {
                 Vacancies.insert {
                     it[title] = "System Administrator"
                     it[description] =
@@ -45,7 +45,7 @@ object PreparedData {
                 }
             }
 
-            if (Vacancies.select { Vacancies.title eq "Junior Developer" }.empty()) {
+            if (Vacancies.selectAll().where { Vacancies.title eq "Junior Developer" }.empty()) {
                 Vacancies.insert {
                     it[title] = "Junior Developer"
                     it[description] =
@@ -58,7 +58,8 @@ object PreparedData {
                 }
             }
 
-            if (Vacancies.select { Vacancies.title eq "Senior Data Scientist" }.empty()) {
+            if (Vacancies.selectAll().where { Vacancies.title eq "Senior Data Scientist" }
+                    .empty()) {
                 Vacancies.insert {
                     it[title] = "Senior Data Scientist"
                     it[description] =
@@ -71,7 +72,7 @@ object PreparedData {
                 }
             }
 
-            if (Vacancies.select { Vacancies.title eq "Marketing Specialist" }.empty()) {
+            if (Vacancies.selectAll().where { Vacancies.title eq "Marketing Specialist" }.empty()) {
                 Vacancies.insert {
                     it[title] = "Marketing Specialist"
                     it[description] =
@@ -84,7 +85,7 @@ object PreparedData {
                 }
             }
 
-            if (Vacancies.select { Vacancies.title eq "Project Manager" }.empty()) {
+            if (Vacancies.selectAll().where { Vacancies.title eq "Project Manager" }.empty()) {
                 Vacancies.insert {
                     it[title] = "Project Manager"
                     it[description] =
@@ -97,7 +98,7 @@ object PreparedData {
                 }
             }
 
-            if (Vacancies.select { Vacancies.title eq "Graphic Designer" }.empty()) {
+            if (Vacancies.selectAll().where { Vacancies.title eq "Graphic Designer" }.empty()) {
                 Vacancies.insert {
                     it[title] = "Graphic Designer"
                     it[description] =
